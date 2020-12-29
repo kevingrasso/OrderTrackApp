@@ -1,0 +1,71 @@
+<template>
+  <q-page>
+  <div class="q-pa-md absolute full-width full-height column">
+    <div class="row q-mb-md">
+      <search />
+      <sort />
+    </div>
+    <q-scroll-area class="q-scroll-area-orders">
+      <p v-if="!Object.keys(ordersInTransit).length && search">
+        No results
+      </p>
+      <no-orders
+        v-if="!Object.keys(ordersInTransit).length && !search">
+        No orders in transit
+      </no-orders>
+      <q-list 
+      class="q-mb-xl"
+      separator 
+      v-else>
+          <order 
+            v-for="(order, key) in ordersInTransit"
+            :key="key"
+            :order = "order"
+            :id = "key"></order>
+            <q-separator />
+      </q-list>
+    </q-scroll-area>
+    <q-dialog v-model="showAddOrder">
+      <add-order @close = "showAddOrder = false" />
+    </q-dialog>
+    </div>
+
+    <q-btn
+    @click="showAddOrder = true"
+    round
+    class="absolute-bottom-right q-ma-md"
+    color="accent"
+    size="20px"
+    icon="add"/>
+
+  </q-page>
+</template>
+
+<script>
+import {mapGetters, mapState} from 'vuex'
+
+export default{
+  data() {
+    return {
+      showAddOrder: false
+    }
+  },
+  computed: {
+    ...mapGetters('orders', ['ordersInTransit']),
+    ...mapState('orders', ['search'])
+  },
+  components:{
+    'order' : require('components/Orders/Order.vue').default,
+    'add-order' : require('components/Orders/Modals/addOrder.vue').default,
+    'no-orders' : require('components/Orders/noOrders.vue').default,
+    'search' : require('components/Orders/Tools/search.vue').default,
+    'sort' : require('components/Orders/Tools/sort.vue').default
+  }
+}
+</script>
+<style>
+ .q-scroll-area-orders{
+   display: flex;
+   flex-grow: 1;
+ }
+</style>
