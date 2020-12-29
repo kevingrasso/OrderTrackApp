@@ -24,19 +24,19 @@
         <q-item-section side>
             <div class="row">
             <q-btn 
-                @click.stop="showEditOrder = true" 
+                @click.prevent="showEditOrder = true" 
                 flat round dense 
                 color="secondary" 
                 icon="edit"/>
             <q-btn 
                 v-if="order.archived"
-                @click.stop="delete_order(id)"
+                @click.prevent="delete_order(id)"
                 flat round dense 
                 color="negative" 
                 icon="delete"/>
             <q-btn 
                 v-else
-                @click.stop="updateOrder({id: id, updates:{archived: !order.archived}})" 
+                @click.prevent="updateOrder({id: id, updates:{archived: !order.archived}})" 
                 flat round dense 
                 color="secondary" 
                 icon="archive"/>
