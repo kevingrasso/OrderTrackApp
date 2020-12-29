@@ -1,29 +1,30 @@
 import Vue from 'vue'
 import {uid} from 'quasar'
+import {firebaseAuth,firebaseDb} from 'boot/firebase'
 
 const state = {
     orders: {
-        'ID1':{
-            track_id:'dncdsnk7281bhdj',
-            name:'almazon tv',
-            last_update:'12/05/2020',
-            delivered: false,
-            archived: false
-        },
-        'ID2':{
-            track_id:'4893dsnk7281bhdj',
-            name:'amazon grill',
-            last_update:'11/05/2020',
-            delivered: false,
-            archived: false
-        },
-        'ID3':{
-            track_id:'dn8393nk7281bhdj',
-            name:'amazon phone',
-            last_update:'11/05/2020',
-            delivered: true,
-            archived: true
-        }
+        // 'ID1':{
+        //     track_id:'dncdsnk7281bhdj',
+        //     name:'almazon tv',
+        //     last_update:'12/05/2020',
+        //     delivered: false,
+        //     archived: false
+        // },
+        // 'ID2':{
+        //     track_id:'4893dsnk7281bhdj',
+        //     name:'amazon grill',
+        //     last_update:'11/05/2020',
+        //     delivered: false,
+        //     archived: false
+        // },
+        // 'ID3':{
+        //     track_id:'dn8393nk7281bhdj',
+        //     name:'amazon phone',
+        //     last_update:'11/05/2020',
+        //     delivered: true,
+        //     archived: true
+        // }
     },
     search:'',
     sort:'name',
@@ -48,19 +49,19 @@ const mutations = {
 }
 
 const actions = {
-    updateOrder({ commit },payload){
-        commit('updateOrder', payload)
+    updateOrder({ dispatch },payload){
+        dispatch('firebaseUpdateOrder', payload)
     },
-    deleteOrder({ commit }, id){
-        commit('deleteOrder', id)
+    deleteOrder({ dispatch }, id){
+        dispatch('firebaseDeleteOrder', id)
     },
-    addOrder({commit}, order){
+    addOrder({dispatch}, order){
         let orderId = uid()
         let payload = {
             id: orderId,
             order: order
         }
-        commit('addOrder', payload)
+        dispatch('firebaseAddOrder', payload)
     },
     setSearch({commit}, value){
         commit('setSearch', value)
@@ -68,6 +69,46 @@ const actions = {
     setSort({commit}, value){
         commit('setSort', value)
     },
+    firebaseReadData({commit}){
+      
+        let userID = firebaseAuth.currentUser.uid
+        let userOrders = firebaseDb.ref('orders/' + userID)
+
+        userOrders.on('child_added', snapshot =>{//added an order
+            let order = snapshot.val()
+            let payload = {
+                id: snapshot.key,
+                order:order
+            }
+            commit('addOrder', payload)
+        })
+        userOrders.on('child_changed', snapshot =>{//order changed
+            let order = snapshot.val()
+            let payload = {
+                id: snapshot.key,
+                updates: order
+            }
+            commit('updateOrder', payload)
+        })
+        userOrders.on('child_removed', snapshot =>{//order removed
+            commit('deleteOrder', snapshot.key)
+        })
+    },
+    firebaseAddOrder({}, payload){
+        let userID = firebaseAuth.currentUser.uid
+        let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
+        orderRef.set(payload.order)
+    },
+    firebaseUpdateOrder({}, payload){
+        let userID = firebaseAuth.currentUser.uid
+        let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
+        orderRef.update(payload.updates)
+    },
+    firebaseDeleteOrder({}, id){
+        let userID = firebaseAuth.currentUser.uid
+        let orderRef = firebaseDb.ref('orders/'+userID+'/'+id)
+        orderRef.remove()
+    }
 }
 
 const getters = {
