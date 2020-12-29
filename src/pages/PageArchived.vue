@@ -1,5 +1,7 @@
 <template>
     <q-page>
+    <tab-orders 
+    :tabs="tabs"/>
     <div class="q-pa-md absolute full-width full-height column">
         <div class="row q-mb-md">
           <search />
@@ -31,16 +33,31 @@
 import Order from 'src/components/Orders/Order.vue'
 import {mapGetters, mapState} from 'vuex'
 
+const tabsData = [
+  {
+    label: 'In Transit',
+    icon: 'local_shipping',
+    link:'/'
+  },
+    {
+    label: 'Archived',
+    icon: 'delete',
+    link:'/archived'
+  }
+]
+
 export default{
   computed: {
     ...mapGetters('orders', ['ordersArchived']),
-    ...mapState('orders', ['search'])
+    ...mapState('orders', ['search']),
+    
   },
   components:{
     'order' : require('components/Orders/Order.vue').default,
     'no-orders' : require('components/Orders/noOrders.vue').default,
     'search' : require('components/Orders/Tools/search.vue').default,
-    'sort' : require('components/Orders/Tools/sort.vue').default
+    'sort' : require('components/Orders/Tools/sort.vue').default,
+    'tab-orders' : require('components/Orders/inTransitArchivedTabs.vue').default
   },
   data() {
     return {
@@ -58,7 +75,8 @@ export default{
         backgroundColor: '#027be3',
         width: '9px',
         opacity: 0.2
-      }
+      },
+      tabs:tabsData
     }
   },
 }

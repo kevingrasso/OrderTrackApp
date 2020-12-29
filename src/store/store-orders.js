@@ -27,7 +27,6 @@ const state = {
     },
     search:'',
     sort:'name',
-    showTabs: true
 }
 
 const mutations = {
@@ -45,9 +44,6 @@ const mutations = {
     },
     setSort(state, value){
         state.sort = value
-    },
-    setShowTabs(state, value){
-        state.showTabs = value
     },
 }
 
@@ -72,10 +68,6 @@ const actions = {
     setSort({commit}, value){
         commit('setSort', value)
     },
-    setShowTabs({commit}, value){
-        commit('setShowTabs', value)
-    },
-    
 }
 
 const getters = {
