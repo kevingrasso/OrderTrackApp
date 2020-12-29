@@ -16,12 +16,22 @@
         </q-toolbar-title>
 
         <q-btn 
-        to="/login" 
-        flat
-        label="LOGIN"
-        icon="account_circle" 
-        class="absolute-right q-ma-sm"/>
-      </q-toolbar>
+          v-if="!loggedIn"
+          to="/login" 
+          flat
+          label="LOGIN"
+          icon="account_circle" 
+          class="absolute-right q-ma-sm"/>
+        <q-btn 
+          v-else 
+          @click= "logoutUser"
+          flat
+          label="LOGOUT"
+          icon="account_circle" 
+          class="absolute-right q-ma-sm"/>
+        </q-toolbar>
+      
+     
     </q-header>
 
     <q-drawer
@@ -56,8 +66,9 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex'
 import EssentialLink from 'components/EssentialLink.vue'
-import {mapState} from 'vuex'
+
 const linksData = [
   {
     title: 'In Transit',
@@ -92,6 +103,12 @@ export default {
       essentialLinks: linksData,
         
       }
+  },
+  computed:{
+    ...mapState('auth', ['loggedIn'])
+  },
+  methods: {
+    ...mapActions('auth', ['logoutUser']),
   },
 }
 </script>
