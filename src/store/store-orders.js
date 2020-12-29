@@ -123,6 +123,11 @@ const getters = {
             ordersSorted[key] = state.orders[key]
         })
         return ordersSorted
+    },
+    orderInformation:(state) => (key) =>{
+        if(Object.keys(state.orders).includes(key)){
+           return state.orders[key]
+        }
     }
 }
 

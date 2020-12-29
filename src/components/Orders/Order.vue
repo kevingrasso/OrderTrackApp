@@ -8,7 +8,8 @@
     :class="order.delivered ? 'bg-green-1' : 'bg-white-1'"
     class="q-pb-md q-pt-md"
     v-touch-hold.mouse="showEditOrderModal"
-    clickable>
+    clickable
+    :to="{ path: 'order-details', query: { id: id }}">
         <q-item-section avatar>
           <q-icon v-if="order.delivered" color="accent" name="home" />
           <q-icon v-else color="accent" name="local_shipping" />

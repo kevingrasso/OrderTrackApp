@@ -23,6 +23,10 @@ const routes = [
       { 
         path: '/login', 
         component: () => import('pages/pageLogin.vue') 
+      },
+      { 
+        path: '/order-details', 
+        component: () => import('pages/orderDetails.vue') 
       }
     ]
   },
