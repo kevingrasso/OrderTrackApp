@@ -17,6 +17,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+ @media screen and (min-width: 768px){
+   .q-tabs{
+     display: none;
+   }
+ }
 </style>

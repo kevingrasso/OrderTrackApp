@@ -1,6 +1,7 @@
 <template>
     <q-page>
-    <tab-orders 
+    <tab-orders
+    class="visible-tabs" 
     :tabs="tabs"/>
     <div class="q-pa-md absolute full-width full-height column">
         <div class="row q-mb-md">
@@ -83,5 +84,4 @@ export default{
 </script>
 
 <style>
- 
 </style>

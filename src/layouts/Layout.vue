@@ -96,9 +96,5 @@ export default {
 }
 </script>
 <style>
- @media screen and (min-width: 768px){
-   .q-tabs{
-     display: none;
-   }
- }
+
 </style>
