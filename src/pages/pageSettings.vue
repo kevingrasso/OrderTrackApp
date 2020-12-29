@@ -24,7 +24,6 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default{
   methods: {
-    ...mapActions('orders', ['setShowTabs']),
     ...mapActions('settings',['setDarkMode'])
   },
   computed:{
@@ -38,12 +37,6 @@ export default{
       }
     }
   },
-  beforeMount(){
-    this.setShowTabs(false)
-  },
-  beforeDestroy(){
-    this.setShowTabs(true)
-  }
 }
 </script>
 <style>

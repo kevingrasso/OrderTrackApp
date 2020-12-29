@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated>
+    <q-header >
       <q-toolbar>
         <q-btn
           flat
@@ -14,16 +14,14 @@
         <q-toolbar-title class="absolute-center">
           Order Track App
         </q-toolbar-title>
+
+        <q-btn 
+        to="/login" 
+        flat
+        label="LOGIN"
+        icon="account_circle" 
+        class="absolute-right q-ma-sm"/>
       </q-toolbar>
-      <q-tabs v-if="set_showTabs">
-        <q-route-tab 
-          v-for="tab in tabs" 
-          dense
-          :key="tab.label"
-          :to="tab.link" 
-          :label="tab.label" 
-          :icon="tab.icon" />
-      </q-tabs>
     </q-header>
 
     <q-drawer
@@ -82,19 +80,6 @@ const linksData = [
     link: '/information'
   },
 ];
-const tabsData = [
-  {
-    label: 'In Transit',
-    icon: 'local_shipping',
-    link:'/'
-  },
-    {
-    label: 'Archived',
-    icon: 'delete',
-    link:'/archived'
-  }
-]
-
 
 export default {
   name: 'MainLayout',
@@ -105,21 +90,11 @@ export default {
       showTabs: this.showTabs,
       leftDrawerOpen: false,
       essentialLinks: linksData,
-      tabs: tabsData    
+        
       }
-  },
-  methods: {
-    set_showTabs(){
-      console.log(this.showTabs)
-      return this.showTabs
-    }
   },
 }
 </script>
 <style>
- @media screen and (min-width: 768px){
-   .q-tabs{
-     display: none;
-   }
- }
+
 </style>
