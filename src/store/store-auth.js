@@ -44,6 +44,7 @@ const actions = {
                 this.$router.push('/').catch(err => {})
                 dispatch('orders/firebaseReadData', null, {root: true})//different module
             }else{
+                commit('orders/setDataDownloaded', false, {root: true})//different module
                 commit('setLoggedIn', false)
                 LocalStorage.set('loggedIn', false)
                 this.$router.push('/login').catch(err => {})

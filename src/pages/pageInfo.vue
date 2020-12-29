@@ -2,7 +2,7 @@
   <q-page padding>
      <div class="q-pa-md" >
     <q-list bordered padding>
-      <q-item-label header>Informartion</q-item-label>
+      <q-item-label header>Information</q-item-label>
 
       <q-item tag="label" v-ripple @click="visitOurWebSite">
         <q-item-section>

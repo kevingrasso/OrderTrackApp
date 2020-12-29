@@ -28,6 +28,7 @@ const state = {
     },
     search:'',
     sort:'name',
+    dataDownloaded: false
 }
 
 const mutations = {
@@ -46,6 +47,9 @@ const mutations = {
     setSort(state, value){
         state.sort = value
     },
+    setDataDownloaded(state, value){
+        state.dataDownloaded = value
+    }
 }
 
 const actions = {
@@ -70,9 +74,12 @@ const actions = {
         commit('setSort', value)
     },
     firebaseReadData({commit}){
-      
         let userID = firebaseAuth.currentUser.uid
         let userOrders = firebaseDb.ref('orders/' + userID)
+
+        userOrders.once('value', snapshot=>{
+            commit('setDataDownloaded', true)
+        })
 
         userOrders.on('child_added', snapshot =>{//added an order
             let order = snapshot.val()
