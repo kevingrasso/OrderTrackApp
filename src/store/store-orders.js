@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {uid} from 'quasar'
 import {firebaseAuth,firebaseDb} from 'boot/firebase'
+import {showErrorMessage} from 'src/functions/function-show-error-message'
 
 const state = {
     orders: {
@@ -10,20 +11,6 @@ const state = {
         //     last_update:'12/05/2020',
         //     delivered: false,
         //     archived: false
-        // },
-        // 'ID2':{
-        //     track_id:'4893dsnk7281bhdj',
-        //     name:'amazon grill',
-        //     last_update:'11/05/2020',
-        //     delivered: false,
-        //     archived: false
-        // },
-        // 'ID3':{
-        //     track_id:'dn8393nk7281bhdj',
-        //     name:'amazon phone',
-        //     last_update:'11/05/2020',
-        //     delivered: true,
-        //     archived: true
         // }
     },
     search:'',
@@ -40,6 +27,9 @@ const mutations = {
     },
     addOrder(state, payload){
         Vue.set(state.orders, payload.id, payload.order)
+    },
+    clearOrders(state){
+        state.orders = {}
     },
     setSearch(state, value){
         state.search = value
@@ -79,6 +69,9 @@ const actions = {
 
         userOrders.once('value', snapshot=>{
             commit('setDataDownloaded', true)
+        }, error => {
+            showErrorMessage(error.message)
+            this.$router.replace('/login')
         })
 
         userOrders.on('child_added', snapshot =>{//added an order
@@ -104,17 +97,29 @@ const actions = {
     firebaseAddOrder({}, payload){
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
-        orderRef.set(payload.order)
+        orderRef.set(payload.order, error =>{
+            if(error){
+                showErrorMessage(error.message)
+            }
+        })
     },
     firebaseUpdateOrder({}, payload){
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
-        orderRef.update(payload.updates)
+        orderRef.update(payload.updates, error =>{
+            if(error){
+                showErrorMessage(error.message)
+            }
+        })
     },
     firebaseDeleteOrder({}, id){
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+id)
-        orderRef.remove()
+        orderRef.remove( error =>{
+            if(error){
+                showErrorMessage(error.message)
+            }
+        })
     }
 }
 

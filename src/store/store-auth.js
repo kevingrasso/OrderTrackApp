@@ -1,5 +1,5 @@
 import {firebaseAuth} from 'boot/firebase'
-import {LocalStorage, Loading} from 'quasar'
+import {LocalStorage, Loading, Notify} from 'quasar'
 import {showErrorMessage} from 'src/functions/function-show-error-message.js'
 
 
@@ -43,11 +43,14 @@ const actions = {
                 LocalStorage.set('loggedIn', true)
                 this.$router.push('/').catch(err => {})
                 dispatch('orders/firebaseReadData', null, {root: true})//different module
+                Notify.create('Logged In')
             }else{
+                commit('orders/clearOrders', null, {root: true})
                 commit('orders/setDataDownloaded', false, {root: true})//different module
                 commit('setLoggedIn', false)
                 LocalStorage.set('loggedIn', false)
                 this.$router.push('/login').catch(err => {})
+                Notify.create('Logged Out')
             }
         })
     }
