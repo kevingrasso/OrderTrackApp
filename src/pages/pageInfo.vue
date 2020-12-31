@@ -38,7 +38,7 @@ export default{
   },
   methods: {
     visitOurWebSite(){
-      openURL('http://google.it')
+      openURL('http://order-track-2ed24.web.app/')
     },
     emailUs(){
       window.location.href = 'mailto:help@ordertrackapp.com?subject=Order Track App Feedback'

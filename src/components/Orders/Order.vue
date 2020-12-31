@@ -9,7 +9,7 @@
     class="q-pb-md q-pt-md"
     v-touch-hold.mouse="showEditOrderModal"
     clickable
-    :to="{ path: 'order-details', query: { id: id }}">
+    :to="{ path: 'order-details', query: { id: id , order:order}}">
         <q-item-section avatar>
           <q-icon v-if="order.delivered" color="accent" name="home" />
           <q-icon v-else color="accent" name="local_shipping" />

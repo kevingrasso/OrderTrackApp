@@ -1,9 +1,10 @@
 <template>
     <q-tabs
-    class="bg-primary text-white shadow-2">
+    class="bg-primary row text-white shadow-2">
         <q-route-tab 
           v-for="tab in tabs" 
           dense
+          class="col"
           :key="tab.label"
           :to="tab.link" 
           :label="tab.label" 
