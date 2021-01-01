@@ -18,6 +18,7 @@
 <script>
 import {mapActions} from 'vuex'
 import { date } from 'quasar'
+import {get_courier} from 'src/boot/tracking-api.js'
 
 export default {
   data() {
@@ -25,9 +26,11 @@ export default {
       orderToInsert:{
         name:'',
         track_id:'',
-        last_update: date.formatDate(Date.now(), 'DD-MM-YYYY'),
+        added_time:  date.formatDate(Date.now(), 'DD-MM-YYYY hh:mm:ss'),
+        last_update: '?',
         delivered: false,
-        archived: false
+        archived: false,
+        courier:{}
       }
     }
   },
@@ -42,8 +45,11 @@ export default {
       }
     },
     submitOrder(){
-      this.addOrder(this.orderToInsert)
-      this.$emit('close')
+      get_courier(this.orderToInsert.track_id).then((result) => {
+          this.orderToInsert.courier = result
+          this.addOrder(this.orderToInsert)
+          this.$emit('close')
+      })
     }
   },
   components:{

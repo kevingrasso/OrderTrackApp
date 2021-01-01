@@ -11,7 +11,7 @@ const mutations = {
     setLoggedIn(state, value){
         state.loggedIn = value
     }
-}
+} 
 
 const actions = {
     registerUser({}, payload){

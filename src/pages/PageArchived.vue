@@ -16,8 +16,14 @@
           <no-orders
           v-if="!Object.keys(ordersArchived).length && !search">
           No orders archived</no-orders>
-          <q-list separator v-else>
-
+          <div v-else>
+            <q-btn 
+            @click.prevent="delete_order()"
+            align="around" 
+            style="width:100%" 
+            color="red-5" 
+            label="Delete all orders"/>
+            <q-list separator >
               <order 
                 v-for="(order, key) in ordersArchived"
                 :key="key"
@@ -25,6 +31,8 @@
                 :id = "key"></order>
             
           </q-list>
+          </div>
+         
         </q-scroll-area>
     </div>
   </q-page>
@@ -32,7 +40,7 @@
 
 <script>
 import Order from 'src/components/Orders/Order.vue'
-import {mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState, mapActions} from 'vuex'
 
 const tabsData = [
   {
@@ -51,7 +59,6 @@ export default{
   computed: {
     ...mapGetters('orders', ['ordersArchived']),
     ...mapState('orders', ['search']),
-    
   },
   components:{
     'order' : require('components/Orders/Order.vue').default,
@@ -59,6 +66,30 @@ export default{
     'search' : require('components/Orders/Tools/search.vue').default,
     'sort' : require('components/Orders/Tools/sort.vue').default,
     'tab-orders' : require('components/Orders/inTransitArchivedTabs.vue').default
+  },
+  methods: {
+    ...mapActions('orders', ['updateOrder', 'deleteOrder']),
+    delete_order(){
+      let ids = []
+      for (let id of Object.keys(this.ordersArchived)) {
+          ids.push(id)
+      }
+      console.log(ids)
+      this.$q.dialog({
+          title: 'Confirm',
+          message: 'Would you like to delete all orders?',
+          ok:{
+              push:true
+          },
+          cancel: {
+              color:'negative'
+          },
+          persistent: true
+      }).onOk(() => {
+        //console.log(Object.keys(this.ordersArchived))
+        this.deleteOrder(ids)
+      })
+    }
   },
   data() {
     return {

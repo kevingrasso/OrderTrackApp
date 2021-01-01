@@ -16,7 +16,8 @@
         </q-item-section>
         <q-item-section>
           {{order.name}}
-          <q-item-label caption>{{order.track_id}}</q-item-label>
+          <q-item-label class= "q-pt-sm" caption>{{order.track_id}}</q-item-label>
+          <q-item-label caption>{{order.courier.name}}</q-item-label>
           </q-item-section>
         <q-item-section side>
           <q-item-label caption>{{order.last_update}}</q-item-label>
@@ -79,7 +80,7 @@ export default {
                 },
                 persistent: true
             }).onOk(() => {
-                this.deleteOrder(id)
+                this.deleteOrder([id])
             })
         },
         showEditOrderModal(){

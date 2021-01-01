@@ -46,8 +46,14 @@ const actions = {
     updateOrder({ dispatch },payload){
         dispatch('firebaseUpdateOrder', payload)
     },
-    deleteOrder({ dispatch }, id){
-        dispatch('firebaseDeleteOrder', id)
+    deleteOrder({ dispatch }, ids){
+        if(ids.length == 1){
+            dispatch('firebaseDeleteOrder', ids)
+        }else if(ids.length > 1){
+            for(let id of ids){
+                dispatch('firebaseDeleteOrder', id)
+            }
+        } 
     },
     addOrder({dispatch}, order){
         let orderId = uid()
