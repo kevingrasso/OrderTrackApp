@@ -12,24 +12,28 @@
         />
 
         <q-toolbar-title class="absolute-center">
-          Order Track App
+          Order Track
         </q-toolbar-title>
 
         <q-btn 
           v-if="!loggedIn"
           to="/login" 
           flat
-          label="LOGIN"
+          stack
+          dense
+          label= "LOGIN"
           icon="account_circle" 
-          class="absolute-right q-ma-sm"/>
+          class="absolute-right q-mr-sm"/>
         <q-btn 
           v-else 
           @click= "logoutUser"
           flat
           label="LOGOUT"
+          stack
+          dense
           icon="account_circle" 
-          class="absolute-right q-ma-sm"/>
-        </q-toolbar>
+          class="absolute-right q-mr-sm"/>
+      </q-toolbar>
       
      
     </q-header>
@@ -112,6 +116,7 @@ export default {
   },
 }
 </script>
-<style>
+
+<style scoped>
 
 </style>

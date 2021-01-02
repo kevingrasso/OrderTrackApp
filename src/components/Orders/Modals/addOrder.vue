@@ -30,7 +30,15 @@ export default {
         last_update: '?',
         delivered: false,
         archived: false,
-        courier:{}
+        courier:{
+          name:'',
+          code:''
+        },
+        order_data:{
+          status:'',
+          lastUpdateTime:'',
+          track_info:''
+        },
       }
     }
   },
@@ -45,11 +53,8 @@ export default {
       }
     },
     submitOrder(){
-      get_courier(this.orderToInsert.track_id).then((result) => {
-          this.orderToInsert.courier = result
-          this.addOrder(this.orderToInsert)
-          this.$emit('close')
-      })
+      this.addOrder(this.orderToInsert)
+      this.$emit('close')
     }
   },
   components:{

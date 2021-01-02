@@ -5,7 +5,7 @@
       <tab-orders 
       :tabs="tabs"/>
 
-      <div class="q-pa-md absolute full-width full-height column">
+      <div class="q-pa-sm absolute full-width full-height column">
         <div class="row q-mb-md">
           <search />
           <sort />
@@ -19,6 +19,7 @@
             No orders in transit
           </no-orders>
           <q-list 
+          bordered
           class="q-mb-xl"
           v-else>
               <order 

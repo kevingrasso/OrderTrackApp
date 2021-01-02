@@ -1,7 +1,9 @@
 import Vue from 'vue'
-import {uid} from 'quasar'
+import {uid, Notify} from 'quasar'
 import {firebaseAuth,firebaseDb} from 'boot/firebase'
 import {showErrorMessage} from 'src/functions/function-show-error-message'
+import {get_multiple_info, create_ship} from 'src/boot/tracking-api.js'
+import { containsTrackId } from 'src/functions/find_element_by_track_id'
 
 const state = {
     orders: {
@@ -69,12 +71,14 @@ const actions = {
     setSort({commit}, value){
         commit('setSort', value)
     },
-    firebaseReadData({commit}){
+    firebaseReadData({commit, dispatch}){
         let userID = firebaseAuth.currentUser.uid
         let userOrders = firebaseDb.ref('orders/' + userID)
 
         userOrders.once('value', snapshot=>{
+            
             commit('setDataDownloaded', true)
+            dispatch('loadMultipleUpdates')
         }, error => {
             showErrorMessage(error.message)
             this.$router.replace('/login')
@@ -100,14 +104,22 @@ const actions = {
             commit('deleteOrder', snapshot.key)
         })
     },
-    firebaseAddOrder({}, payload){
+    firebaseAddOrder({dispatch, state}, payload){
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
-        orderRef.set(payload.order, error =>{
-            if(error){
-                showErrorMessage(error.message)
-            }
-        })
+        var result = containsTrackId(state.orders, payload.order.track_id)
+        console.log(result)
+        if(!result){
+            orderRef.set(payload.order, error =>{
+                if(error){
+                    showErrorMessage(error.message)
+                }
+            })
+            dispatch('loadSingleUpdate', payload.id)
+        }
+        else{
+            showErrorMessage('An order with the same track id already exists.')
+        }
     },
     firebaseUpdateOrder({}, payload){
         let userID = firebaseAuth.currentUser.uid
@@ -125,6 +137,84 @@ const actions = {
             if(error){
                 showErrorMessage(error.message)
             }
+        })
+    },
+    loadMultipleUpdates({state, dispatch}){
+        
+        let keys = Object.keys(state.orders)
+    
+        let list_track_id = []
+        for(let key of keys){
+            list_track_id.push(state.orders[key].track_id)
+        }
+    
+        let updates = []
+        get_multiple_info(list_track_id).then((result) =>{
+            if(result != null){
+                let i = 0
+                console.log(result)
+                for(let key of keys){
+                    let payload = {
+                        id:key,
+                        updates:{
+                            order_data:{
+                                status: result[i].status,
+                                lastUpdateTime:result[i].lastUpdateTime,
+                                track_info: result[i].origin_info.trackinfo
+                            },
+                            last_update: result[i].lastUpdateTime,
+                            courier:{
+                                name:result[i].carrier_code,
+                                code:result[i].carrier_code
+                            },
+                            delivered:(result[i].status == 'delivered')? true : false
+                        }
+                    }
+                    dispatch('firebaseUpdateOrder', payload)
+                    i++
+                }
+            }
+        })
+    },
+    async loadSingleUpdate({dispatch}, key){
+        
+        let track_id = state.orders[key].track_id
+        let created = false
+        await create_ship(track_id).then((result)=>{
+            //console.log(result)
+        })
+        await get_multiple_info([track_id]).then((result)=>{
+            console.log(result)
+            if(result != null){
+                let payload = {
+                    id: key,
+                    updates:{
+                        order_data:{
+                            status: result[0].status,
+                            lastUpdateTime:result[0].lastUpdateTime,
+                            track_info: result[0].origin_info.trackinfo
+                        },
+                        last_update: result[0].lastUpdateTime,
+                        courier:{
+                            name:result[0].carrier_code,
+                            code:result[0].carrier_code
+                        },
+                        delivered:(result[0].status == 'delivered')? true : false
+                    }
+                }
+                console.log('updated')
+                dispatch('firebaseUpdateOrder', payload)
+            }
+            else{
+                dispatch('firebaseDeleteOrder', key)
+                // Notify.create({
+                //     type: 'negative',
+                //     message: 'Cannot find your order whit track id: '+ track_id,
+                //     icon: 'report_problem'
+                // })
+                showErrorMessage('Cannot find your order whit track id: '+ track_id)
+            }
+            
         })
     }
 }

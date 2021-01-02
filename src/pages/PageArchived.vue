@@ -3,7 +3,7 @@
     <tab-orders
     class="visible-tabs" 
     :tabs="tabs"/>
-    <div class="q-pa-md absolute full-width full-height column">
+    <div class="q-pa-sm absolute full-width full-height column">
         <div class="row q-mb-md">
           <search />
           <sort />
@@ -23,7 +23,8 @@
             style="width:100%" 
             color="red-5" 
             label="Delete all orders"/>
-            <q-list separator >
+            <q-list 
+            bordered >
               <order 
                 v-for="(order, key) in ordersArchived"
                 :key="key"
