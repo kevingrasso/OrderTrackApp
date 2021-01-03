@@ -2,8 +2,9 @@ import Vue from 'vue'
 import {uid, Notify} from 'quasar'
 import {firebaseAuth,firebaseDb} from 'boot/firebase'
 import {showErrorMessage} from 'src/functions/function-show-error-message'
-import {get_multiple_info, create_ship} from 'src/boot/tracking-api.js'
+import {get_multiple_info, create_ship, get_order_info, delete_ship} from 'src/boot/tracking-api.js'
 import { containsTrackId } from 'src/functions/find_element_by_track_id'
+import {get_position} from 'src/functions/get_position_on_list'
 
 const state = {
     orders: {
@@ -48,11 +49,13 @@ const actions = {
     updateOrder({ dispatch },payload){
         dispatch('firebaseUpdateOrder', payload)
     },
-    deleteOrder({ dispatch }, ids){
+    deleteOrder({ dispatch, state }, ids){
         if(ids.length == 1){
+            delete_ship(state.orders[ids].courier.code, state.orders[ids].track_id)
             dispatch('firebaseDeleteOrder', ids)
         }else if(ids.length > 1){
             for(let id of ids){
+                delete_ship(state.orders[id].courier.code, state.orders[id].track_id)
                 dispatch('firebaseDeleteOrder', id)
             }
         } 
@@ -108,7 +111,7 @@ const actions = {
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
         var result = containsTrackId(state.orders, payload.order.track_id)
-        console.log(result)
+        //console.log(result)
         if(!result){
             orderRef.set(payload.order, error =>{
                 if(error){
@@ -130,7 +133,7 @@ const actions = {
             }
         })
     },
-    firebaseDeleteOrder({}, id){
+    firebaseDeleteOrder({state}, id){
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+id)
         orderRef.remove( error =>{
@@ -139,8 +142,7 @@ const actions = {
             }
         })
     },
-    loadMultipleUpdates({state, dispatch}){
-        
+    async loadMultipleUpdates({state, dispatch}){
         let keys = Object.keys(state.orders)
     
         let list_track_id = []
@@ -148,30 +150,27 @@ const actions = {
             list_track_id.push(state.orders[key].track_id)
         }
     
-        let updates = []
-        get_multiple_info(list_track_id).then((result) =>{
+        await get_multiple_info(list_track_id).then((result) =>{
             if(result != null){
-                let i = 0
-                console.log(result)
-                for(let key of keys){
+                for (let key of keys){
+                    let pos = get_position(result, state.orders[key].track_id)
                     let payload = {
                         id:key,
                         updates:{
                             order_data:{
-                                status: result[i].status,
-                                lastUpdateTime:result[i].lastUpdateTime,
-                                track_info: result[i].origin_info.trackinfo
+                                status: result[pos].status,
+                                lastUpdateTime:result[pos].lastUpdateTime,
+                                track_info: result[pos].origin_info.trackinfo
                             },
-                            last_update: result[i].lastUpdateTime,
+                            last_update: result[pos].lastUpdateTime,
                             courier:{
-                                name:result[i].carrier_code,
-                                code:result[i].carrier_code
+                                name:result[pos].carrier_code,
+                                code:result[pos].carrier_code
                             },
-                            delivered:(result[i].status == 'delivered')? true : false
+                            delivered:(result[pos].status == 'delivered')? true : false
                         }
                     }
                     dispatch('firebaseUpdateOrder', payload)
-                    i++
                 }
             }
         })
@@ -179,43 +178,37 @@ const actions = {
     async loadSingleUpdate({dispatch}, key){
         
         let track_id = state.orders[key].track_id
-        let created = false
-        await create_ship(track_id).then((result)=>{
-            //console.log(result)
-        })
-        await get_multiple_info([track_id]).then((result)=>{
-            console.log(result)
+        let courier_code = null
+        courier_code = await create_ship(track_id)
+        if(courier_code != null){
+            let result = await get_order_info(track_id, courier_code)
             if(result != null){
                 let payload = {
                     id: key,
                     updates:{
                         order_data:{
-                            status: result[0].status,
-                            lastUpdateTime:result[0].lastUpdateTime,
-                            track_info: result[0].origin_info.trackinfo
+                            status:         result.status,
+                            lastUpdateTime: result.lastUpdateTime,
+                            track_info:     result.track_info
                         },
-                        last_update: result[0].lastUpdateTime,
+                        last_update:        result.lastUpdateTime,
                         courier:{
-                            name:result[0].carrier_code,
-                            code:result[0].carrier_code
+                            name:           courier_code,
+                            code:           courier_code
                         },
-                        delivered:(result[0].status == 'delivered')? true : false
+                        delivered:(result.status == 'delivered')? true : false
                     }
                 }
-                console.log('updated')
                 dispatch('firebaseUpdateOrder', payload)
             }
             else{
                 dispatch('firebaseDeleteOrder', key)
-                // Notify.create({
-                //     type: 'negative',
-                //     message: 'Cannot find your order whit track id: '+ track_id,
-                //     icon: 'report_problem'
-                // })
-                showErrorMessage('Cannot find your order whit track id: '+ track_id)
+                showErrorMessage('Cannot find your order with track id: '+ track_id)
             }
-            
-        })
+        }else{
+            dispatch('firebaseDeleteOrder', key)
+            showErrorMessage('Cannot find your order with track id: '+ track_id)
+        }
     }
 }
 

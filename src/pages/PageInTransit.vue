@@ -59,7 +59,8 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState, mapActions} from 'vuex'
+import axios from 'axios'
 const tabsData = [
   {
     label: 'In Transit',
@@ -79,6 +80,20 @@ export default{
       tabs:tabsData,
     }
   },
+  methods: {
+    get_orders_info(){
+      axios.get('http://localhost:3000/order-data',{
+        params:{
+          track_id: 'WW300213164',
+          courier_code: 'gls-italy'
+        }
+      }).then((response) =>{
+        console.log('response', response.data)
+      }).catch((err) =>{
+        console.log('err', err)
+      })
+    }
+  },
   computed: {
     ...mapGetters('orders', ['ordersInTransit']),
     ...mapState('orders', ['search', 'dataDownloaded'])
@@ -90,7 +105,7 @@ export default{
     'search' : require('components/Orders/Tools/search.vue').default,
     'sort' : require('components/Orders/Tools/sort.vue').default,
     'tab-orders' : require('components/Orders/inTransitArchivedTabs.vue').default
-  }
+  },
 }
 </script>
 <style>

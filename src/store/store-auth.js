@@ -44,6 +44,7 @@ const actions = {
                 this.$router.push('/').catch(err => {})
                 dispatch('orders/firebaseReadData', null, {root: true})//different module
                 Notify.create('Logged In')
+                //dispatch('orders/loadMultipleUpdates', null, {root: true})//different module
             }else{
                 commit('orders/clearOrders', null, {root: true})
                 commit('orders/setDataDownloaded', false, {root: true})//different module
