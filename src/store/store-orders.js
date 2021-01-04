@@ -18,7 +18,8 @@ const state = {
     },
     search:'',
     sort:'name',
-    dataDownloaded: false
+    dataDownloaded: false,
+    updating:false
 }
 
 const mutations = {
@@ -42,6 +43,9 @@ const mutations = {
     },
     setDataDownloaded(state, value){
         state.dataDownloaded = value
+    },
+    setUpdating(state, value){
+        state.updating = value
     }
 }
 
@@ -142,7 +146,9 @@ const actions = {
             }
         })
     },
-    async loadMultipleUpdates({state, dispatch}){
+    async loadMultipleUpdates({state, dispatch, commit}){
+        
+        commit('setUpdating', true)
         let keys = Object.keys(state.orders)
     
         let list_track_id = []
@@ -152,31 +158,36 @@ const actions = {
     
         await get_multiple_info(list_track_id).then((result) =>{
             if(result != null){
+                console.log(result)
                 for (let key of keys){
                     let pos = get_position(result, state.orders[key].track_id)
-                    let payload = {
-                        id:key,
-                        updates:{
-                            order_data:{
-                                status: result[pos].status,
-                                lastUpdateTime:result[pos].lastUpdateTime,
-                                track_info: result[pos].origin_info.trackinfo
-                            },
-                            last_update: result[pos].lastUpdateTime,
-                            courier:{
-                                name:result[pos].carrier_code,
-                                code:result[pos].carrier_code
-                            },
-                            delivered:(result[pos].status == 'delivered')? true : false
+                    //if(result[pos].lastUpdateTime != state.orders[key].order_data.lastUpdateTime){
+                        let payload = {
+                            id:key,
+                            updates:{
+                                order_data:{
+                                    status: result[pos].status,
+                                    lastUpdateTime:result[pos].lastUpdateTime,
+                                    track_info: result[pos].origin_info.trackinfo
+                                },
+                                last_update: result[pos].lastUpdateTime,
+                                courier:{
+                                    name:result[pos].carrier_code,
+                                    code:result[pos].carrier_code
+                                },
+                                delivered:(result[pos].status == 'delivered')? true : false
+                            }
                         }
-                    }
-                    dispatch('firebaseUpdateOrder', payload)
+                        dispatch('firebaseUpdateOrder', payload)
+                    //}
                 }
             }
+            commit('setUpdating', false)
         })
-    },
-    async loadSingleUpdate({dispatch}, key){
         
+    },
+    async loadSingleUpdate({dispatch, commit}, key){
+        commit('setUpdating', true)
         let track_id = state.orders[key].track_id
         let courier_code = null
         courier_code = await create_ship(track_id)
@@ -189,7 +200,7 @@ const actions = {
                         order_data:{
                             status:         result.status,
                             lastUpdateTime: result.lastUpdateTime,
-                            track_info:     result.track_info
+                            track_info:     result.track_info,
                         },
                         last_update:        result.lastUpdateTime,
                         courier:{
@@ -203,12 +214,13 @@ const actions = {
             }
             else{
                 dispatch('firebaseDeleteOrder', key)
-                showErrorMessage('Cannot find your order with track id: '+ track_id)
+                showErrorMessage('Cannot find your shipment')
             }
         }else{
             dispatch('firebaseDeleteOrder', key)
-            showErrorMessage('Cannot find your order with track id: '+ track_id)
+            showErrorMessage('Cannot find your shipment')
         }
+        commit('setUpdating', false)
     }
 }
 

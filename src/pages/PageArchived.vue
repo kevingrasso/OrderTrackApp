@@ -1,40 +1,48 @@
 <template>
     <q-page>
-    <tab-orders
-    class="visible-tabs" 
-    :tabs="tabs"/>
-    <div class="q-pa-sm absolute full-width full-height column">
-        <div class="row q-mb-md">
-          <search />
-          <sort />
-        </div>
-        <p
-        v-if="!Object.keys(ordersArchived).length && search">
-        No results</p>
+    
+      <div class="absolute full-width " style="height:64vh;">
+        <tab-orders
+        class="visible-tabs" 
+        :tabs="tabs"/>
+        <div class="q-pa-sm full-width  full-height">
+
+          <div class="row q-mb-md">
+            <search />
+            <sort />
+          </div>
         
-        <q-scroll-area class="q-scroll-area-orders">
+        
           <no-orders
           v-if="!Object.keys(ordersArchived).length && !search">
           No orders archived</no-orders>
-          <div v-else>
+          <div 
+          v-else
+          class="full-height">
             <q-btn 
             @click.prevent="delete_order()"
             align="around" 
             style="width:100%" 
             color="red-5" 
+            class="q-mt-sm"
             label="Delete all orders"/>
-            <q-list 
-            bordered >
-              <order 
-                v-for="(order, key) in ordersArchived"
-                :key="key"
-                :order = "order"
-                :id = "key"></order>
-            
-          </q-list>
+            <q-scroll-area class="q-scroll-area-orders full-height">
+                <q-list
+                class="q-mt-sm" 
+                bordered >
+                  <order 
+                    v-for="(order, key) in ordersArchived"
+                    :key="key"
+                    :order = "order"
+                    :id = "key"></order>
+                
+              </q-list>
+           </q-scroll-area>
           </div>
          
-        </q-scroll-area>
+       
+      </div>
+        
     </div>
   </q-page>
 </template>
@@ -75,7 +83,6 @@ export default{
       for (let id of Object.keys(this.ordersArchived)) {
           ids.push(id)
       }
-      console.log(ids)
       this.$q.dialog({
           title: 'Confirm',
           message: 'Would you like to delete all orders?',
@@ -116,4 +123,5 @@ export default{
 </script>
 
 <style>
+
 </style>

@@ -1,11 +1,12 @@
 <template>
 <q-page padding>
-  <div class="q-pa-md row items-start q-gutter-md middle">
+  <q-scroll-area style=" height:88vh;">
+    <div class="q-pa-md row items-start middle row">
     <q-card class="my-card col bg-grey-3" flat bordered>
       
       <q-card-section>
         <div class="text-h4 q-mt-sm q-mb-sm">
-          {{order.name}}
+          {{orderInformation(order_id).name}}
           <q-btn 
                 @click.prevent="showEditOrder = true" 
                 flat round dense 
@@ -13,14 +14,14 @@
                 icon="edit"/>
         </div>
         <div class="text-caption text-grey q-mt-md q-mb-md">
-          Last update: {{order.last_update}}
+          Last update: {{orderInformation(order_id).last_update}}
         </div>
         <div class="text-caption text-grey">
-          Track ID: {{order.track_id}}
+          Track ID: {{orderInformation(order_id).track_id}}
 
           <q-btn
             round
-            @click= "copy_track_id(order.track_id)"
+            @click= "copy_track_id(orderInformation(order_id).track_id)"
             color="accent"
             size="xs"
             icon="content_copy"
@@ -28,7 +29,7 @@
           />
         </div>
         <q-item-section>
-          <q-item-label class= "q-pt-sm" caption>{{order.courier.name}}</q-item-label>
+          <q-item-label class= "q-pt-sm" caption>{{orderInformation(order_id).courier.name}}</q-item-label>
         </q-item-section>
        
       </q-card-section>       
@@ -37,39 +38,53 @@
     <q-dialog v-model="showEditOrder">
           <edit-order 
           @close = "getOrderData"
-          :order="order"
+          :order="orderInformation(order_id)"
           :id="order_id" />
     </q-dialog>
   </div>
   <div 
-  v-if="order.order_data.track_info != '' && order.order_data.track_info != null"
-  class="q-pa-md row items-start q-gutter-md middle">
-    <q-list bordered separator style="width:100%">
-      <q-item 
-      v-ripple
-      class="row"
-      v-for="update in order.order_data.track_info"
-      :key="update.id">
-        <q-item-section class="col ">{{update.StatusDescription}}</q-item-section>
-        <q-item-section class="col-2">{{update.Date}}</q-item-section>
-      </q-item>
+    v-if="orderInformation(order_id).order_data.track_info != '' && orderInformation(order_id).order_data.track_info != null"
+    class="q-pa-md  items-start row">
+      <q-card 
+      flat 
+      bordered 
+      v-for="update in orderInformation(order_id).order_data.track_info"
+      :key="update.id"
+      class="my-card q-pt-md q-mt-sm q-mb-sm row ">
+      
+        <q-card-section class="q-pt-none col">
+          {{update.StatusDescription}}
+        </q-card-section>
+        <q-card-section class="q-pt-none col"
+        style="text-align:right">
+          {{update.Date}}
+        </q-card-section>
+        <q-separator inset 
+        v-if="update.Details !=''"/>
+        <q-card-section 
+        v-if="update.Details !=''"
+        class="col">
+          {{update.Details}}
+        </q-card-section>
 
-    </q-list>
+    </q-card>
   </div>
   <div 
- v-else
-  class="q-pa-md row">
+    v-else
+    class="q-pa-md row">
     <q-banner inline-actions rounded class="bg-orange text-white col" >
       Cannot find your order. Check if the track id is correct.
     </q-banner>
-  </div>
-                                    
+  </div>    
+
+  </q-scroll-area> 
+  <p v-if="updating"> Updating</p>                    
 </q-page>
  
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapState} from 'vuex'
 import { Notify, copyToClipboard, Loading } from 'quasar'
 import {axios} from 'axios'
 
@@ -77,14 +92,12 @@ export default {
   data() {
     return {
       order_id:'',
-      order:{},
       showEditOrder: false
     }
   },
   methods: {
     ...mapActions('orders', ['updateOrder']),
     getOrderData(){
-      Object.assign(this.order, this.orderInformation(this.$route.query.id))
       this.showEditOrder = false
     },
     copy_track_id(text){
@@ -101,17 +114,21 @@ export default {
   },
   beforeMount(){
     this.order_id = this.$route.query.id
-    this.order = this.$route.query.order
   },
   mounted(){
   },
   computed:{
-    ...mapGetters('orders', ['orderInformation'])
+    ...mapGetters('orders', ['orderInformation']),
+    ...mapState('orders', ['updating'])
   }
 }
 </script>
 
-<style>
+<style scoped>
+.my-card{
+    width: 100%;
+
+}
 
 
 </style>

@@ -15,7 +15,8 @@ config - express
 
 const app = express()
 app.use(cors({
-  origin: 'http://localhost:8080'
+  origin: ['https://order-track-2ed24--test-backend-zfrhtux7.web.app','http://localhost:8080']
+  
 }));
 
 /*
@@ -166,6 +167,7 @@ app.get('/delete-order', async (request, response) => {
   }
   response.send(data)
 })
+
 
 /*
 listen 

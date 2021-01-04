@@ -7,7 +7,7 @@
         <q-item
             :class="order.delivered ? 'bg-green-1' : 'bg-white-1'"
             class="q-pb-md q-pt-md row"
-            v-touch-hold.mouse="showEditOrderModal"
+            v-touch-hold:500.mouse="showEditOrderModal"
             clickable
             :to="{ path: 'order-details', query: { id: id , order:order}}">
             <q-item-section avatar class="col-2">

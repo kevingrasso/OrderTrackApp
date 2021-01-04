@@ -2,39 +2,49 @@
   <q-page>
 
     <template v-if="dataDownloaded">
-      <tab-orders 
-      :tabs="tabs"/>
-
-      <div class="q-pa-sm absolute full-width full-height column">
-        <div class="row q-mb-md">
-          <search />
-          <sort />
+      <div class="absolute full-width " style="height:81vh;">
+         <tab-orders 
+              :tabs="tabs"/>
+        <div class="q-pa-sm full-width full-height column">
+               
+            <div class="row q-mb-md">
+              <search />
+              <sort />
+            </div>
+            <div class="q-gutter-md row">
+            <q-spinner
+              v-if="updating"
+              class="col"
+              color="primary"
+              size="3em"
+              />
+            </div>
+            <q-scroll-area class="q-scroll-area-orders q-pt-sm">
+              <p v-if="!Object.keys(ordersInTransit).length && search">
+                No results
+              </p>
+              <no-orders
+                v-if="!Object.keys(ordersInTransit).length && !search">
+                No orders in transit
+              </no-orders>
+              <q-list 
+              bordered
+              class="q-mb-xl"
+              v-else>
+                  <order 
+                    v-for="(order, key) in ordersInTransit"
+                    :key="key"
+                    :order = "order"
+                    :id = "key"
+                    ></order>
+                    
+              </q-list>
+            </q-scroll-area>
+            <q-dialog v-model="showAddOrder">
+              <add-order @close = "showAddOrder = false" />
+            </q-dialog>
         </div>
-        <q-scroll-area class="q-scroll-area-orders">
-          <p v-if="!Object.keys(ordersInTransit).length && search">
-            No results
-          </p>
-          <no-orders
-            v-if="!Object.keys(ordersInTransit).length && !search">
-            No orders in transit
-          </no-orders>
-          <q-list 
-          bordered
-          class="q-mb-xl"
-          v-else>
-              <order 
-                v-for="(order, key) in ordersInTransit"
-                :key="key"
-                :order = "order"
-                :id = "key"
-                ></order>
-                
-          </q-list>
-        </q-scroll-area>
-        <q-dialog v-model="showAddOrder">
-          <add-order @close = "showAddOrder = false" />
-        </q-dialog>
-        </div>
+      </div>
     </template>
     <template v-else>
       <div >
@@ -43,7 +53,7 @@
           size="5em"
           class="absolute-center"
         />
-        <q-tooltip :offset="[0, 5]">QSpinnerHourglass</q-tooltip>
+
       </div>
     </template>
 
@@ -54,7 +64,7 @@
     color="accent"
     size="20px"
     icon="add"/>
-
+   
   </q-page>
 </template>
 
@@ -96,7 +106,7 @@ export default{
   },
   computed: {
     ...mapGetters('orders', ['ordersInTransit']),
-    ...mapState('orders', ['search', 'dataDownloaded'])
+    ...mapState('orders', ['search', 'dataDownloaded', 'updating'])
   },
   components:{
     'order' : require('components/Orders/Order.vue').default,
