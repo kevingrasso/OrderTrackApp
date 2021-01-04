@@ -13,9 +13,10 @@ In this project i will develop an application to track all shipment of a user. T
 *In this section list the tools and any special techniques you will employ.*
 
 The main tools and techniques we will employ are:
-- **Kivy**: for the Android and GUI application running on the table \[2\].
-- **ZeroMQ**: for communication between Android application and GUI \[3\].
-...
+- **Vuejs**: for the interface \[1\].
+- **Quasar framework**: for communication between Android application and GUI \[2\].
+- **Nodejs**: for the server.\[3\]
+
 
 # Expected Outcomes
 
@@ -28,17 +29,16 @@ I expect the following outcomes from this project:
 
 # Summary
 *Finally, here give a summary of the project with some indication of impact.*
-The purpose of this project is to experiment with cross-device interaction and determine how feasible it can be in practice. Our goal is to consider implementation strategies and experiment with at least one use-case scenario. If successful, the prototype software components developed in this project could foster cross-device interaction in real application in the future.
+
 
 # Project Documents
 *Put links here to the **final report** and **presentation** for the project when finished.*
 
 # Bibliography
-*Be sure to include any relevant links to tools or bibliographic references to the literature.*
 
-\[1\] https://quasar.dev/start/pick-quasar-flavour
+\[1\] https://vuejs.org/
 
-\[2\] https://vuejs.org/
+\[2\] https://quasar.dev/start/pick-quasar-flavour
 
 \[3\] https://nodejs.org/it/
 
