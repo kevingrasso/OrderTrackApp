@@ -1,13 +1,13 @@
+# Order Track (order-track)
 
 # Overview
-*In this section give a broad overview of the project goals and plan*
 
-- **Academic Year**: 2019-2020
-- **Project Title**: Cross-device interaction between smartphones and interactive surfaces
-- **Students**: John Smith and Marco Rossi 
-- **CFUs**: 9 (or 6)
+- **Academic Year**: 2020-2021
+- **Project Title**: Order track app
+- **Students**: Kevin Grasso
+- **CFUs**: 9
 
-In this project we will re-implement the underlying technology and some of the interaction modalities from the literature on cross-device interaction [1]. We will implement a Kivy-based subsystem for detecting touch events with smartphones on an interactive table. That is, we will detect when, where, and (some elements) of how a user physically touches the table with his smartphone. Key to this low-level subsystem will be the association of tap events with specific smartphones. This will be done using accelerometer and gyroscope measurements as described in \[1\]. Our implementation will require a both a mobile smartphone application, and a software component integrated in Kivy GUI application. Selected interaction modalities from [1] will be implemented to demonstrate the potential of this technology.
+In this project i will develop an application to track all shipment of a user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment from different devices.
 
 # Tools and Techniques
 *In this section list the tools and any special techniques you will employ.*
@@ -18,15 +18,13 @@ The main tools and techniques we will employ are:
 ...
 
 # Expected Outcomes
-*Here you should itemize the specific project outcomes.*
 
-We expect the following outcomes from this project:
+I expect the following outcomes from this project:
+- An application can be used from multiple platforms, like browser, android, ios, windows.
+- The interface intuitive and easy to use, where all information related to shipments will be displayed.
+- A database were i can save all data.
+- A server from which cn retrieve all information regarding shipments.
 - A server component integrable in Kivy GUI applications. This component will serve as the main point of entry for mobile phone interactions with the table.
-- An Android application supporting detection of interaction events. This application will read accelerometer (and possibly compass and gyroscope) data and stream it to the interaction server.
-- An application demonstrating touch detection and phone association. This GUI application will demonstrate visually how smartphone interactions are detected and associated with a specific phone.
-An application demonstrating bi-directional file transfer. This demonstrator will show-off a use case for cross-device interactions.
-
-After a final phase of evaluation, we will decide whether to release this system on Github as part of the Kivy Garden.
 
 # Summary
 *Finally, here give a summary of the project with some indication of impact.*
@@ -38,15 +36,17 @@ The purpose of this project is to experiment with cross-device interaction and d
 # Bibliography
 *Be sure to include any relevant links to tools or bibliographic references to the literature.*
 
-\[1\] Schmidt, D., Seifert, J., Rukzio, E. and Gellersen, H., 2012, June. “A cross-device interaction style for mobiles and surfaces.” In: Proceedings of the Designing Interactive Systems Conference (pp. 318-327). ACM.
+\[1\] https://quasar.dev/start/pick-quasar-flavour
 
-\[2\] https://kivy.org/#home
+\[2\] https://vuejs.org/
 
-\[3\] https://zeromq.org/
+\[3\] https://nodejs.org/it/
 
-# Order Track (order-track)
+\[4\] https://firebase.google.com/
 
-A tracking application
+\[5\] https://www.heroku.com/
+
+
 
 ## Install the dependencies
 ```bash
