@@ -7,15 +7,16 @@
 - **Students**: Kevin Grasso
 - **CFUs**: 9
 
-In this project i will develop an application to track all shipment of a user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment from different devices.
+In this project i will develop an application to track all shipment of a user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment of different couriers from different devices.
 
 # Tools and Techniques
 *In this section list the tools and any special techniques you will employ.*
 
-The main tools and techniques we will employ are:
+The main tools and techniques I will employ are:
 - **Vuejs**: for the interface \[1\].
 - **Quasar framework**: for communication between Android application and GUI \[2\].
 - **Nodejs**: for the server.\[3\]
+- **axios**: for calls to the API
 
 
 # Expected Outcomes
@@ -25,7 +26,6 @@ I expect the following outcomes from this project:
 - The interface intuitive and easy to use, where all information related to shipments will be displayed.
 - A database were i can save all data.
 - A server from which cn retrieve all information regarding shipments.
-- A server component integrable in Kivy GUI applications. This component will serve as the main point of entry for mobile phone interactions with the table.
 
 # Summary
 *Finally, here give a summary of the project with some indication of impact.*
@@ -45,6 +45,8 @@ I expect the following outcomes from this project:
 \[4\] https://firebase.google.com/
 
 \[5\] https://www.heroku.com/
+
+\[6\] https://github.com/axios/axios
 
 
 
