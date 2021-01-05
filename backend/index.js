@@ -168,6 +168,21 @@ app.get('/delete-order', async (request, response) => {
   response.send(data)
 })
 
+app.get('/test-gls', async (request, response) => {
+  await axios.get('https://www.gls-italy.com/?option=com_gls&view=track_e_trace&mode=search&tipo_codice=nazionale&numero_spedizione=WW300213164',).then((res) => {
+    response.send(res.data)
+  }).catch((err)=>{
+    response.send(err)
+  })
+})
+app.get('/test-poste', async (request, response) => {
+  await axios.get('https://www.sda.it/wps/portal/Servizi_online/ricerca_spedizioni?locale=it&tracing.letteraVettura=5P33C12751137',).then((res) => {
+    response.send(res.data)
+  }).catch((err)=>{
+    response.send(err)
+  })
+})
+
 
 /*
 listen 
