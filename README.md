@@ -16,6 +16,7 @@ The main tools and techniques I will employ are:
 - **Vuejs**: for the interface \[1\].
 - **Quasar framework**: for communication between Android application and GUI \[2\].
 - **Nodejs**: for the server.\[3\]
+- **axios**: for calls to the API
 
 
 # Expected Outcomes
@@ -44,6 +45,8 @@ I expect the following outcomes from this project:
 \[4\] https://firebase.google.com/
 
 \[5\] https://www.heroku.com/
+
+\[6\] https://github.com/axios/axios
 
 
 
