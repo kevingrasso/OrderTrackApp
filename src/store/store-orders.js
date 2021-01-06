@@ -146,44 +146,45 @@ const actions = {
             }
         })
     },
-    async loadMultipleUpdates({state, dispatch, commit}){
+    async loadMultipleUpdates({getters,state, dispatch, commit}){
         
         commit('setUpdating', true)
-        let keys = Object.keys(state.orders)
+        let keys = Object.keys(getters.ordersInTransit) //updates only orders in transit and not archived
     
         let list_track_id = []
         for(let key of keys){
             list_track_id.push(state.orders[key].track_id)
         }
-    
-        await get_multiple_info(list_track_id).then((result) =>{
-            if(result != null){
-                console.log(result)
-                for (let key of keys){
-                    let pos = get_position(result, state.orders[key].track_id)
-                    //if(result[pos].lastUpdateTime != state.orders[key].order_data.lastUpdateTime){
-                        let payload = {
-                            id:key,
-                            updates:{
-                                order_data:{
-                                    status: result[pos].status,
-                                    lastUpdateTime:result[pos].lastUpdateTime,
-                                    track_info: result[pos].origin_info.trackinfo
-                                },
-                                last_update: result[pos].lastUpdateTime,
-                                courier:{
-                                    name:result[pos].carrier_code,
-                                    code:result[pos].carrier_code
-                                },
-                                delivered:(result[pos].status == 'delivered')? true : false
+        if(list_track_id.length>0){
+                await get_multiple_info(list_track_id).then((result) =>{
+                if(result != null){
+                    for (let key of keys){
+                        let pos = get_position(result, state.orders[key].track_id)
+                        if(result[pos].lastUpdateTime != state.orders[key].order_data.lastUpdateTime){
+                            let payload = {
+                                id:key,
+                                updates:{
+                                    order_data:{
+                                        status: result[pos].status,
+                                        lastUpdateTime:result[pos].lastUpdateTime,
+                                        track_info: result[pos].origin_info.trackinfo,
+                                        updated:true
+                                    },
+                                    courier:{
+                                        name:result[pos].carrier_code,
+                                        code:result[pos].carrier_code
+                                    },
+                                    delivered:(result[pos].status == 'delivered')? true : false
+                                }
                             }
+                            dispatch('firebaseUpdateOrder', payload)
                         }
-                        dispatch('firebaseUpdateOrder', payload)
-                    //}
+                    }
                 }
-            }
-            commit('setUpdating', false)
-        })
+            })
+        }
+        
+        commit('setUpdating', false)
         
     },
     async loadSingleUpdate({dispatch, commit}, key){
@@ -201,8 +202,8 @@ const actions = {
                             status:         result.status,
                             lastUpdateTime: result.lastUpdateTime,
                             track_info:     result.track_info,
+                            updated:true,
                         },
-                        last_update:        result.lastUpdateTime,
                         courier:{
                             name:           courier_code,
                             code:           courier_code
@@ -266,12 +267,21 @@ const getters = {
         let ordersSorted={}
         let keysOrdered = Object.keys(state.orders)
         keysOrdered.sort((a,b)=>{
-            let a_name = state.orders[a][state.sort].toLowerCase()
-            let b_name = state.orders[b][state.sort].toLowerCase()
-
-            if(a_name > b_name) return 1
-            else if(a_name < b_name) return -1
-            else return 0
+            let a_name = ''
+            let b_name = ''
+            if(state.sort != 'last_update'){
+                a_name = state.orders[a][state.sort].toLowerCase()
+                b_name = state.orders[b][state.sort].toLowerCase()
+                if(a_name > b_name) return 1
+                else if(a_name < b_name) return -1
+                else return 0
+            }else{
+                a_name = state.orders[a].order_data.lastUpdateTime
+                b_name = state.orders[b].order_data.lastUpdateTime
+                if(a_name > b_name) return -1
+                else if(a_name < b_name) return 1
+                else return 0
+            }           
         })
         keysOrdered.forEach((key) =>{
             ordersSorted[key] = state.orders[key]

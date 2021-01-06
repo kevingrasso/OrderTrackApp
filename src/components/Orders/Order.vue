@@ -1,5 +1,5 @@
 <template>
- <div class="relative-position">
+ <div class="relative-position full-width" style="border-bottom:1px solid grey">
     <transition
         appear
         enter-active-class="animated zoomIn"
@@ -10,17 +10,18 @@
             v-touch-hold:500.mouse="showEditOrderModal"
             clickable
             :to="{ path: 'order-details', query: { id: id , order:order}}">
-            <q-item-section avatar class="col-2">
-            <q-icon v-if="order.delivered" color="accent" name="home" />
-            <q-icon v-else color="accent" name="local_shipping" />
+            <q-item-section avatar class="col-1">
+                <q-badge v-if= "order.order_data.updated" color="orange" class="absolute-top-left q-ml-sm q-mt-lg" style="border-radius: 10px; height:10px;"></q-badge>
+                <q-icon v-if="order.delivered" color="accent" name="home" />
+                <q-icon v-else color="accent" name="local_shipping" />
             </q-item-section>
-            <q-item-section class="col-4">
-            {{order.name}}
-            <q-item-label class= "q-pt-sm" caption>{{order.track_id}}</q-item-label>
-            <q-item-label caption>{{order.courier.name}}</q-item-label>
+            <q-item-section class="col-5 q-pl-md">
+                {{order.name}}
+                <q-item-label class= "q-pt-sm" caption>{{order.track_id}}</q-item-label>
+                <q-item-label caption>{{order.courier.name}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-4" side>
-            <q-item-label caption>{{order.last_update}}</q-item-label>
+                <q-item-label caption >{{order.order_data.lastUpdateTime}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-2" side>
                 <div class="row">
