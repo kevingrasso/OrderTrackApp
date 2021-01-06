@@ -13,8 +13,7 @@ In this project i will develop an application to track all shipment of a user. T
 *In this section list the tools and any special techniques you will employ.*
 
 The main tools and techniques I will employ are:
-- **Vuejs**: for the interface \[1\].
-- **Quasar framework**: for communication between Android application and GUI \[2\].
+- **Quasar framework**: Framework based on vuejs for the interface \[2\].
 - **Nodejs**: for the server.\[3\]
 - **axios**: for calls to the API
 
