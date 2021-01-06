@@ -25,7 +25,7 @@ I expect the following outcomes from this project:
 - An application can be used from multiple platforms, like browser, android, ios, windows.
 - The interface intuitive and easy to use, where all information related to shipments will be displayed.
 - A database were i can save all data.
-- A server from which cn retrieve all information regarding shipments.
+- A server from which can retrieve all information regarding shipments.
 
 # Summary
 *Finally, here give a summary of the project with some indication of impact.*
