@@ -24,7 +24,8 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default{
   methods: {
-    ...mapActions('settings',['setDarkMode'])
+    ...mapActions('settings',['setDarkMode']),
+    ...mapActions('settings',['setActualPage'])
   },
   computed:{
     ...mapGetters('settings', ['settings']),
@@ -37,6 +38,9 @@ export default{
       }
     }
   },
+  created() {
+    this.setActualPage('settings')
+  }
 }
 </script>
 <style>
