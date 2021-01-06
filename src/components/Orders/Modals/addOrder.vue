@@ -27,7 +27,6 @@ export default {
         name:'',
         track_id:'',
         added_time:  date.formatDate(Date.now(), 'DD-MM-YYYY hh:mm:ss'),
-        last_update: '?',
         delivered: false,
         archived: false,
         courier:{
@@ -37,7 +36,8 @@ export default {
         order_data:{
           status:'',
           lastUpdateTime:'',
-          track_info:''
+          track_info:'',
+          updated:false
         },
       }
     }

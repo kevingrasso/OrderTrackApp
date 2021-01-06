@@ -1,24 +1,18 @@
 <template>
     <q-page>
-    
-      <div class="absolute full-width " style="height:64vh;">
-        <tab-orders
-        class="visible-tabs" 
-        :tabs="tabs"/>
-        <div class="q-pa-sm full-width  full-height">
+
+        <div class="absolute q-pa-sm full-width">
 
           <div class="row q-mb-md">
             <search />
             <sort />
           </div>
-        
-        
+      
           <no-orders
           v-if="!Object.keys(ordersArchived).length && !search">
           No orders archived</no-orders>
           <div 
-          v-else
-          class="full-height">
+          v-else>
             <q-btn 
             @click.prevent="delete_order()"
             align="around" 
@@ -26,10 +20,8 @@
             color="red-5" 
             class="q-mt-sm"
             label="Delete all orders"/>
-            <q-scroll-area class="q-scroll-area-orders full-height">
                 <q-list
-                class="q-mt-sm" 
-                bordered >
+                class="q-mt-sm row" >
                   <order 
                     v-for="(order, key) in ordersArchived"
                     :key="key"
@@ -37,13 +29,12 @@
                     :id = "key"></order>
                 
               </q-list>
-           </q-scroll-area>
           </div>
          
        
       </div>
         
-    </div>
+    <!-- </div> -->
   </q-page>
 </template>
 
@@ -78,6 +69,7 @@ export default{
   },
   methods: {
     ...mapActions('orders', ['updateOrder', 'deleteOrder']),
+    ...mapActions('settings',['setActualPage']),
     delete_order(){
       let ids = []
       for (let id of Object.keys(this.ordersArchived)) {
@@ -119,6 +111,9 @@ export default{
       tabs:tabsData
     }
   },
+  created() {
+    this.setActualPage('archived')
+  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <q-tabs
-    class="bg-primary row text-white shadow-2">
+    class="bg-primary row text-white  ">
         <q-route-tab 
           v-for="tab in tabs" 
           dense

@@ -29,14 +29,11 @@
 
 <script>
 import {openURL} from 'quasar'
+import {mapActions} from 'vuex'
 
 export default{
-  data() {
-    return {
-      
-    }
-  },
   methods: {
+    ...mapActions('settings',['setActualPage']),
     visitOurWebSite(){
       openURL('http://order-track-2ed24.web.app/')
     },
@@ -44,6 +41,9 @@ export default{
       window.location.href = 'mailto:help@ordertrackapp.com?subject=Order Track App Feedback'
     }
   },
+  created() {
+    this.setActualPage('info')
+  }
 }
 </script>
 <style>

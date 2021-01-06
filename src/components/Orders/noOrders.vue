@@ -5,7 +5,7 @@
     leave-active-class="animated zoomOut">
         <q-banner 
         rounded
-        class="bg-grey-3 q-pa-lg flex flex-center text-center">
+        class="bg-grey-3 q-pa-lg q-mt-sm flex flex-center text-center">
             <span class="text-h6 text-no-wrap">
                 <slot></slot> 
             </span>

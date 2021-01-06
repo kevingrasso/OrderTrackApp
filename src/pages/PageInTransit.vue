@@ -2,16 +2,16 @@
   <q-page>
 
     <template v-if="dataDownloaded">
-      <div class="absolute full-width " style="height:81vh;">
-         <tab-orders 
-              :tabs="tabs"/>
-        <div class="q-pa-sm full-width full-height column">
+         
+        <div class="absolute q-pa-sm full-width">
                
-            <div class="row q-mb-md">
+            <div class="row ">
               <search />
               <sort />
             </div>
-            <div class="q-gutter-md row">
+            <div 
+            v-if="updating"
+            class="q-gutter-md row">
             <q-spinner
               v-if="updating"
               class="col"
@@ -19,17 +19,12 @@
               size="3em"
               />
             </div>
-            <q-scroll-area class="q-scroll-area-orders q-pt-sm">
-              <p v-if="!Object.keys(ordersInTransit).length && search">
-                No results
-              </p>
               <no-orders
                 v-if="!Object.keys(ordersInTransit).length && !search">
                 No orders in transit
               </no-orders>
               <q-list 
-              bordered
-              class="q-mb-xl"
+              class="q-mb-xl q-mt-sm row full width"
               v-else>
                   <order 
                     v-for="(order, key) in ordersInTransit"
@@ -37,14 +32,12 @@
                     :order = "order"
                     :id = "key"
                     ></order>
-                    
+                  
               </q-list>
-            </q-scroll-area>
             <q-dialog v-model="showAddOrder">
               <add-order @close = "showAddOrder = false" />
             </q-dialog>
         </div>
-      </div>
     </template>
     <template v-else>
       <div >
@@ -60,7 +53,7 @@
     <q-btn
     @click="showAddOrder = true"
     round
-    class="absolute-bottom-right q-ma-md"
+    class="fixed-bottom-right q-ma-md shadow-2"
     color="accent"
     size="20px"
     icon="add"/>
@@ -102,7 +95,8 @@ export default{
       }).catch((err) =>{
         console.log('err', err)
       })
-    }
+    },
+     ...mapActions('settings',['setActualPage'])
   },
   computed: {
     ...mapGetters('orders', ['ordersInTransit']),
@@ -116,11 +110,11 @@ export default{
     'sort' : require('components/Orders/Tools/sort.vue').default,
     'tab-orders' : require('components/Orders/inTransitArchivedTabs.vue').default
   },
+  created() {
+    this.setActualPage('in_transit')
+  }
 }
 </script>
 <style>
- .q-scroll-area-orders{
-   display: flex;
-   flex-grow: 1;
- }
+
 </style>
