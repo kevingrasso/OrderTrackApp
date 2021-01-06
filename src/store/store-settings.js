@@ -2,8 +2,9 @@ import { LocalStorage } from 'quasar'
 
 const state = {
     settings:{
-        darkMode:true
-    }
+        darkMode:true,
+    },
+    page:'login',
 }
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
     },
     setSettings(state, settings){
         Object.assign(state.settings, settings)
+    },
+    setActualPage(state, value){
+        state.page = value
     }
 }
 
@@ -28,6 +32,9 @@ const actions = {
         if (settings){
             commit('setSettings', settings)
         }
+    },
+    setActualPage({commit}, value){
+        commit('setActualPage', value)
     }
     
 }
