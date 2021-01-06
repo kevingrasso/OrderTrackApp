@@ -16,7 +16,7 @@ The main tools and techniques I will employ are:
 - **Vuejs**: for the interface \[1\].
 - **Quasar framework**: for communication between Android application and GUI \[2\].
 - **Nodejs**: for the server.\[3\]
-- **axios**: for calls to the API
+- **axios**: for calls to the API \[6\]
 
 
 # Expected Outcomes
