@@ -38,10 +38,9 @@
           v-if="loggedIn && page!='login'" 
           @click= "logoutUser"
           flat
-          label="LOGOUT"
           stack
           dense
-          icon="account_circle" 
+          icon="exit_to_app" 
           class="absolute-right q-mr-sm"/>
       </q-toolbar>
       <tab-orders
@@ -59,12 +58,12 @@
       content-class="bg-grey-1"
     >
       <q-list >
-        <q-item-label
+        <!-- <q-item-label
           header
           class="text-grey-8"
         >
           Navigation
-        </q-item-label>
+        </q-item-label> -->
        
         <EssentialLink
           v-for="link in essentialLinks"
