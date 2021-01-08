@@ -38,7 +38,7 @@
                     icon="delete"/>
                 <q-btn 
                     v-else
-                    @click.prevent="updateOrder({id: id, updates:{archived: !order.archived}})" 
+                    @click.prevent="archiveOrder(id)" 
                     flat round dense 
                     color="secondary" 
                     icon="archive"/>
@@ -60,6 +60,7 @@
 
 <script>
 import {mapActions} from 'vuex'
+
 export default {
     props:['order', 'id'],
     data() {
@@ -83,6 +84,18 @@ export default {
             }).onOk(() => {
                 this.deleteOrder([id])
             })
+        },
+        archiveOrder(id){
+            this.$q.notify({
+                message: 'Order Archived'
+            })
+            this.updateOrder({
+                id: id, 
+                updates:{
+                    archived: !this.order.archived
+                    }
+            })
+
         },
         showEditOrderModal(){
             this.showEditOrder = true

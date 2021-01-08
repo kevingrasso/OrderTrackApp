@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {uid, Notify} from 'quasar'
+import {uid} from 'quasar'
 import {firebaseAuth,firebaseDb} from 'boot/firebase'
 import {showErrorMessage} from 'src/functions/function-show-error-message'
 import {get_multiple_info, create_ship, get_order_info, delete_ship} from 'src/boot/tracking-api.js'
