@@ -2,14 +2,14 @@ import { LocalStorage } from 'quasar'
 
 const state = {
     settings:{
-        darkMode:true,
+        archiveIfDelivered:false,
     },
     page:'login',
 }
 
 const mutations = {
-    setDarkMode(state, value){
-        state.settings.darkMode = value
+    setArchiveIfDelivered(state, value){
+        state.settings.archiveIfDelivered = value
     },
     setSettings(state, settings){
         Object.assign(state.settings, settings)
@@ -20,8 +20,8 @@ const mutations = {
 }
 
 const actions = {
-    setDarkMode({commit, dispatch}, value){
-        commit('setDarkMode', value)
+    setArchiveIfDelivered({commit, dispatch}, value){
+        commit('setArchiveIfDelivered', value)
         dispatch('saveSettings')
     },
     saveSettings({state}){

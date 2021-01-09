@@ -6,10 +6,10 @@
 
       <q-item tag="label" v-ripple>
         <q-item-section>
-          <q-item-label>Dark mode</q-item-label>
+          <q-item-label>Archive automatically if order delivered</q-item-label>
         </q-item-section>
         <q-item-section side >
-          <q-toggle color="blue" v-model="darkMode" val="battery" />
+          <q-toggle color="blue" v-model="archiveIfDelivered" val="battery" />
         </q-item-section>
       </q-item>
 
@@ -24,17 +24,17 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default{
   methods: {
-    ...mapActions('settings',['setDarkMode']),
+    ...mapActions('settings',['setArchiveIfDelivered']),
     ...mapActions('settings',['setActualPage'])
   },
   computed:{
     ...mapGetters('settings', ['settings']),
-    darkMode:{
+    archiveIfDelivered:{
       get(){
-        return this.settings.darkMode
+        return this.settings.archiveIfDelivered
       },
       set(value){
-        this.setDarkMode(value)
+        this.setArchiveIfDelivered(value)
       }
     }
   },
