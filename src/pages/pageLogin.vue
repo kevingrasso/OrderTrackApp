@@ -30,14 +30,22 @@
 
 <script>
 import Register from 'src/components/Auth/register_login.vue'
+import{mapActions} from 'vuex'
+
 export default {
   data() {
     return {
       tab: 'login'
     }
   },
+  methods:{
+     ...mapActions('settings',['setActualPage'])
+  },
   components:{
     'register-login': require('components/Auth/register_login.vue').default
+  },
+  created(){
+    this.setActualPage('login')
   }
 }
 </script>

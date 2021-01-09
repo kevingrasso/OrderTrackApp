@@ -26,14 +26,13 @@
         </q-toolbar-title>
 
         <q-btn 
-          v-if="!loggedIn && page!='login'"
-          to="/login" 
+          v-if="loggedIn && (page=='archived' || page == 'in_transit')"
+          @click="updateOrders"
           flat
           stack
           dense
-          label= "LOGIN"
-          icon="account_circle" 
-          class="absolute-right q-mr-sm"/>
+          icon="cached" 
+          class="absolute-right q-mr-xl"/>
         <q-btn 
           v-if="loggedIn && page!='login'" 
           @click= "logoutUser"
@@ -58,12 +57,6 @@
       content-class="bg-grey-1"
     >
       <q-list >
-        <!-- <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Navigation
-        </q-item-label> -->
        
         <EssentialLink
           v-for="link in essentialLinks"
@@ -137,6 +130,10 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['logoutUser']),
+    ...mapActions('orders', ['loadMultipleUpdates']),
+    updateOrders(){
+      this.loadMultipleUpdates()
+    }
   },
 }
 </script>

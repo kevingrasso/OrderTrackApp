@@ -8,13 +8,6 @@ import {get_position} from 'src/functions/get_position_on_list'
 
 const state = {
     orders: {
-        // 'ID1':{
-        //     track_id:'dncdsnk7281bhdj',
-        //     name:'almazon tv',
-        //     last_update:'12/05/2020',
-        //     delivered: false,
-        //     archived: false
-        // }
     },
     search:'',
     sort:'name',
