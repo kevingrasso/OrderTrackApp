@@ -63,6 +63,19 @@
                 v-for="link in essentialLinks"
                 :key="link.title"
                 v-bind="link"/>
+                <q-item 
+                v-if="$q.platform.is.electron"
+                @click="quitApp"
+                clickable 
+                class="absolute-bottom">
+                  <q-item-section avatar>
+                    <q-icon name="power_settings_new" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>Quit</q-item-label>
+                  </q-item-section>
+                </q-item>
           </q-list>
         </div>
 
@@ -75,6 +88,8 @@
             <div>@order-track-app</div>
           </div>
         </q-img>
+
+          
     </q-drawer>
 
     <q-page-container>
@@ -147,6 +162,19 @@ export default {
     },
     logout(){
       this.logoutUser()
+    },
+    quitApp(){
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Really quit Order Track app?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        if(this.$q.platform.is.electron){
+          require('electron').ipcRenderer.send('quit-app')
+        }
+        
+      })
     }
   },
 }
