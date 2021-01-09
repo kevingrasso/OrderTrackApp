@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent = "submitForm">
         <q-banner class="bg-grey-3 row q-mb-md" rounded>
-        <template v-slot:avatar>
-            <q-icon name="account_circle" color="primary" />
-        </template>
-        {{tab | titleCase}} to our Order Track App
+            <template v-slot:avatar>
+                <q-icon name="account_circle" color="primary" />
+            </template>
+            {{tab | titleCase}} to our Order Track App
         </q-banner>
         <div  class="row q-mb-sm">
             <q-input 

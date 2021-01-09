@@ -22,8 +22,21 @@
             <register-login
             :tab="tab" />
           </q-tab-panel>
-
+            
         </q-tab-panels>
+  </q-card>
+  <q-card
+  v-if="tab == 'login'">
+     <div class="q-pa-md q-mt-md">
+         <q-banner class="bg-grey-3 row q-mb-md text-center" rounded>
+            Do not have an account?
+          </q-banner>
+             <q-btn 
+             class="full-width"  
+             color="accent" 
+             label= 'Create new account'
+             @click= "setTab('register')" />
+        </div>
   </q-card>
 </q-page>
 </template>
@@ -39,10 +52,18 @@ export default {
     }
   },
   methods:{
-     ...mapActions('settings',['setActualPage'])
+     ...mapActions('settings',['setActualPage']),
+     setTab(tab){
+       this.tab = tab
+     }
   },
   components:{
     'register-login': require('components/Auth/register_login.vue').default
+  },
+  beforeMount(){
+    if(this.$route.query.tab != undefined){
+      this.tab = this.$route.query.tab
+    }
   },
   created(){
     this.setActualPage('login')
