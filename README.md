@@ -7,7 +7,7 @@
 - **Students**: Kevin Grasso
 - **CFUs**: 9
 
-In this project i will develop an application to track all shipment of a user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment of different couriers from different devices.
+In this project i will develop an application to track all shipment of an user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment of different couriers from different devices.
 
 # Tools and Techniques
 *In this section list the tools and any special techniques you will employ.*
