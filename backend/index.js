@@ -169,20 +169,24 @@ app.get('/delete-order', async (request, response) => {
 })
 
 app.get('/test-gls', async (request, response) => {
-  await axios.get('https://www.gls-italy.com/?option=com_gls&view=track_e_trace&mode=search&tipo_codice=nazionale&numero_spedizione=WW300213164',).then((res) => {
+  await axios.post('https://www.gls-italy.com/?option=com_gls&view=track_e_trace&mode=search&tipo_codice=nazionale&numero_spedizione=WW300213164',).then((res) => {
     response.send(res.data)
   }).catch((err)=>{
     response.send(err)
   })
 })
 app.get('/test-poste', async (request, response) => {
-  await axios.get('https://www.sda.it/wps/portal/Servizi_online/ricerca_spedizioni?locale=it&tracing.letteraVettura=5P33C12751137',).then((res) => {
+
+  await axios.post('https://www.poste.it/online/dovequando/DQ-REST/ricercasemplice',{
+    codiceSpedizione: "5P33C12751137",
+    periodoRicerca: 1,
+    tipoRichiedente: "WEB"
+  }).then((res) => {
     response.send(res.data)
   }).catch((err)=>{
     response.send(err)
   })
 })
-
 
 /*
 listen 
