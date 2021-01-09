@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {uid} from 'quasar'
+import {Notify, uid} from 'quasar'
 import {firebaseAuth,firebaseDb} from 'boot/firebase'
 import {showErrorMessage} from 'src/functions/function-show-error-message'
 import {get_multiple_info, create_ship, get_order_info, delete_ship} from 'src/boot/tracking-api.js'
@@ -108,7 +108,6 @@ const actions = {
         let userID = firebaseAuth.currentUser.uid
         let orderRef = firebaseDb.ref('orders/'+userID+'/'+payload.id)
         var result = containsTrackId(state.orders, payload.order.track_id)
-        //console.log(result)
         if(!result){
             orderRef.set(payload.order, error =>{
                 if(error){
@@ -139,11 +138,19 @@ const actions = {
             }
         })
     },
-    async loadMultipleUpdates({getters,state, dispatch, commit}){
+    async loadMultipleUpdates({getters,state, dispatch, commit, rootGetters}){
         
         commit('setUpdating', true)
-        let keys = Object.keys(getters.ordersInTransit) //updates only orders in transit and not archived
-    
+
+        let archiveIfDelivered = rootGetters['settings/settings'].archiveIfDelivered
+
+        let keys = []
+        //updates only orders in transit and not delivered
+        for(let key of Object.keys(getters.ordersInTransit)){
+            if(!state.orders[key].delivered){
+                keys.push(key)
+            }
+        }
         let list_track_id = []
         for(let key of keys){
             list_track_id.push(state.orders[key].track_id)
@@ -167,8 +174,17 @@ const actions = {
                                         name:result[pos].carrier_code,
                                         code:result[pos].carrier_code
                                     },
-                                    delivered:(result[pos].status == 'delivered')? true : false
+                                    delivered:(result[pos].status == 'delivered')? true : false,
+                                    archived:(result[pos].status == 'delivered' && archiveIfDelivered)? true : false
                                 }
+                            }
+                            if(payload.updates.archived){
+                                Notify.create({
+                                    type: 'positive',
+                                    color: 'positive',
+                                    timeout: 1000,
+                                    message: 'Order delivered'
+                                })
                             }
                             dispatch('firebaseUpdateOrder', payload)
                         }
@@ -180,8 +196,10 @@ const actions = {
         commit('setUpdating', false)
         
     },
-    async loadSingleUpdate({dispatch, commit}, key){
+    async loadSingleUpdate({dispatch, commit, rootGetters}, key){
         commit('setUpdating', true)
+
+        let archiveIfDelivered = rootGetters['settings/settings'].archiveIfDelivered
         let track_id = state.orders[key].track_id
         let courier_code = null
         courier_code = await create_ship(track_id)
@@ -201,8 +219,17 @@ const actions = {
                             name:           courier_code,
                             code:           courier_code
                         },
-                        delivered:(result.status == 'delivered')? true : false
+                        delivered:(result.status == 'delivered')? true : false,
+                        archived:(result.status == 'delivered' && archiveIfDelivered)? true : false
                     }
+                }
+                if(payload.updates.archived){
+                    Notify.create({
+                        type: 'positive',
+                        color: 'positive',
+                        timeout: 1000,
+                        message: 'Order delivered'
+                    })
                 }
                 dispatch('firebaseUpdateOrder', payload)
             }

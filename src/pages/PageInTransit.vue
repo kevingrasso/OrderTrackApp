@@ -9,16 +9,6 @@
               <search />
               <sort />
             </div>
-            <div 
-            v-if="updating"
-            class="q-gutter-md row">
-            <q-spinner
-              v-if="updating"
-              class="col"
-              color="primary"
-              size="3em"
-              />
-            </div>
               <no-orders
                 v-if="!Object.keys(ordersInTransit).length && !search">
                 No orders in transit

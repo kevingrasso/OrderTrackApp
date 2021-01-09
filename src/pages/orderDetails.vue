@@ -5,16 +5,21 @@
       <q-card class="my-card col bg-grey-3" flat bordered>
         
         <q-card-section>
-          <div class="text-h4 q-mt-sm q-mb-sm">
-            {{orderInformation(order_id).name}}
-            <q-btn 
+          <div class=" q-mt-sm q-mb-sm row justify-between">
+            <div class="text-h4 col-12"  >
+              <span> {{orderInformation(order_id).name}} </span> 
+            </div>
+           <div class="col-1">
+             <q-btn 
                   @click.prevent="showEditOrder = true" 
                   flat round dense 
                   color="secondary" 
                   icon="edit"/>
+           </div>
+            
           </div>
           <div class="text-caption text-grey q-mt-md q-mb-md">
-            Last update: {{orderInformation(order_id).order_data.lastUpdateTime}}
+            Last update: {{orderInformation(order_id).order_data.lastUpdateTime | time}}
           </div>
           <div class="text-caption text-grey">
             Track ID: {{orderInformation(order_id).track_id}}
@@ -44,7 +49,7 @@
     </div>
     <div 
     v-if="orderInformation(order_id).order_data.track_info != '' && orderInformation(order_id).order_data.track_info != null"
-    class="q-pa-md  q-pb-lg items-start row">
+    class="q-pb-lg q-pt-md items-start row">
       <q-card 
       flat 
       bordered 
@@ -57,7 +62,7 @@
         </q-card-section>
         <q-card-section class="q-pt-none col"
         style="text-align:right">
-          {{update.Date}}
+          {{update.Date | time}}
         </q-card-section>
         <q-separator inset 
         v-if="update.Details !=''"/>
@@ -112,6 +117,12 @@ export default {
   },
   components:{
         'edit-order' : require('components/Orders/Modals/editOrder.vue').default
+  },
+  filters:{
+        time: function(value){
+            if (!value) return ''
+            return value.slice(0,-3)
+        }
   },
   beforeMount(){
     this.order_id = this.$route.query.id

@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -13,7 +13,7 @@
         />
           <q-btn
           v-if="page == 'order_details'"
-          v-go-back=" '/' "
+          v-go-back= " '/' "
           flat
           dense
           round
@@ -22,12 +22,13 @@
         />
 
         <q-toolbar-title class="absolute-center">
-          Order Track
+         Order Track
         </q-toolbar-title>
 
         <q-btn 
           v-if="loggedIn && (page=='archived' || page == 'in_transit')"
           @click="updateOrders"
+          :loading="updating"
           flat
           stack
           dense
@@ -35,7 +36,7 @@
           class="absolute-right q-mr-xl"/>
         <q-btn 
           v-if="loggedIn && page!='login'" 
-          @click= "logoutUser"
+          @click= "logout"
           flat
           stack
           dense
@@ -56,15 +57,24 @@
       bordered
       content-class="bg-grey-1"
     >
-      <q-list >
-       
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-        <q-separator/>
-      </q-list>
+        <div style="height: calc(100% - 150px); margin-top: 150px; ">
+          <q-list padding>
+               <EssentialLink
+                v-for="link in essentialLinks"
+                :key="link.title"
+                v-bind="link"/>
+          </q-list>
+        </div>
+
+        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="https://cdn.pixabay.com/photo/2017/08/27/21/20/box-2687558_960_720.png">
+            </q-avatar>
+            <div class="text-weight-bold">Order Track App</div>
+            <div>@order-track-app</div>
+          </div>
+        </q-img>
     </q-drawer>
 
     <q-page-container>
@@ -126,13 +136,17 @@ export default {
   },
   computed:{
     ...mapState('auth', ['loggedIn']),
-    ...mapState('settings', ['page'])
+    ...mapState('settings', ['page']),
+    ...mapState('orders', ['updating'])
   },
   methods: {
     ...mapActions('auth', ['logoutUser']),
     ...mapActions('orders', ['loadMultipleUpdates']),
     updateOrders(){
       this.loadMultipleUpdates()
+    },
+    logout(){
+      this.logoutUser()
     }
   },
 }

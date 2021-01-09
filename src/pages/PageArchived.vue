@@ -30,11 +30,7 @@
                 
               </q-list>
           </div>
-         
-       
       </div>
-        
-    <!-- </div> -->
   </q-page>
 </template>
 

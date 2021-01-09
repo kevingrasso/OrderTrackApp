@@ -1,11 +1,13 @@
 <template>
- <div class="relative-position full-width" style="border-bottom:1px solid grey">
-    <transition
+<transition
         appear
         enter-active-class="animated zoomIn"
         leave-active-class="animated zoomOut">
+    <div class="relative-position full-width q-mb-sm">
+    
         <q-item
-            :class="order.delivered ? 'bg-green-1' : 'bg-white-1'"
+            :class="order.delivered ? 'bg-green-1' : 'bg-blue-grey-1'"
+            style="border-radius:5px;"
             class="q-pb-md q-pt-md row"
             v-touch-hold:500.mouse="showEditOrderModal"
             clickable
@@ -21,7 +23,7 @@
                 <q-item-label caption>{{order.courier.name}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-4" side>
-                <q-item-label caption >{{order.order_data.lastUpdateTime}}</q-item-label>
+                <q-item-label caption class="text-center">{{order.order_data.lastUpdateTime | time}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-2" side>
                 <div class="row">
@@ -53,8 +55,8 @@
                 :id="id" />
             </q-dialog>
         </q-item>
-    </transition>
- </div>
+    </div>
+ </transition>
       
 </template>
 
@@ -99,10 +101,16 @@ export default {
         },
         showEditOrderModal(){
             this.showEditOrder = true
-        }
+        },
     },
     components:{
         'edit-order' : require('components/Orders/Modals/editOrder.vue').default
+    },
+    filters:{
+        time: function(value){
+            if (!value) return ''
+            return value.slice(0,-3)
+        }
     }
 }
 </script>
