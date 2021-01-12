@@ -4,7 +4,7 @@
 
 - **Academic Year**: 2020-2021
 - **Project Title**: Order track app
-- **Students**: Kevin Grasso
+- **Student**: Kevin Grasso
 - **CFUs**: 9
 
 In this project i will develop an application to track all shipment of an user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment of different couriers from different devices.
@@ -21,10 +21,12 @@ The main tools and techniques I will employ are:
 # Expected Outcomes
 
 I expect the following outcomes from this project:
+- Needfinding to define the requirements of the app, define personas and scenarios
 - An application can be used from multiple platforms, like browser, android, ios, windows.
 - The interface intuitive and easy to use, where all information related to shipments will be displayed.
 - A database were i can save all data.
 - A server from which can retrieve all information regarding shipments.
+- Usability test
 
 # Summary
 *Finally, here give a summary of the project with some indication of impact.*
