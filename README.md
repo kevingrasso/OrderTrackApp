@@ -16,7 +16,7 @@ In this project i will develop an application to track all shipment of an user. 
 - **Electron**: For the windows/mac os app  \[5\].
 - **Firebase**: For the database \[6\].
 - **ExpressJS**: For the server \[7\].
-- **Trackingmore**: Api for retrieving data of shippings
+- **Trackingmore**: Api for retrieving data of shippings  \[8\].
 
 
 # Expected Outcomes
