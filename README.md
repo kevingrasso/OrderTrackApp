@@ -29,11 +29,12 @@ I expect the following outcomes from this project:
 - Usability test
 
 # Summary
-*Finally, here give a summary of the project with some indication of impact.*
+
+In this project was developed an application that supports users to keep track of their shipments with multiple devices. In the future, the functionalities suggested by the candidates of the usability test will be implemented to make the application more user friendly.
 
 
 # Project Documents
-*Put links here to the **final report** and **presentation** for the project when finished.*
+- Final report: https://github.com/kevingrasso/OrderTrackApp/tree/master/Progetto
 
 # Bibliography
 
