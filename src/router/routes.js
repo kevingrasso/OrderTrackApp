@@ -27,7 +27,7 @@ const routes = [
       { 
         path: '/order-details', 
         component: () => import('pages/orderDetails.vue') 
-      },
+      }
     ]
   },
 

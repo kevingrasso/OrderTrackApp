@@ -9,7 +9,7 @@
           </div>
       
           <no-orders
-          v-if="!Object.keys(ordersArchived).length && !search">
+          v-if="!Object.keys(ordersArchived).length">
           No orders archived</no-orders>
           <div 
           v-else>
@@ -82,8 +82,10 @@ export default{
           },
           persistent: true
       }).onOk(() => {
-        //console.log(Object.keys(this.ordersArchived))
         this.deleteOrder(ids)
+        this.$q.notify({
+            message: 'All Orders Deleted'
+        })
       })
     }
   },

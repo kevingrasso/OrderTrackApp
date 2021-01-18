@@ -6,10 +6,10 @@
         
         <q-card-section>
           <div class=" q-mt-sm q-mb-sm row justify-between">
-            <div class="text-h4 col-12"  >
-              <span> {{orderInformation(order_id).name}} </span> 
+            <div class="text-h4 col"  >
+              <span class="ow"> {{orderInformation(order_id).name}} </span> 
             </div>
-           <div class="col-1">
+           <div class="col-auto">
              <q-btn 
                   @click.prevent="showEditOrder = true" 
                   flat round dense 
@@ -22,7 +22,7 @@
             Last update: {{orderInformation(order_id).order_data.lastUpdateTime | time}}
           </div>
           <div class="text-caption text-grey">
-            Track ID: {{orderInformation(order_id).track_id}}
+            Track ID: <span class="ow text-uppercase">{{orderInformation(order_id).track_id}}</span>
 
             <q-btn
               round
@@ -34,7 +34,7 @@
             />
           </div>
           <q-item-section>
-            <q-item-label class= "q-pt-sm" caption>{{orderInformation(order_id).courier.name}}</q-item-label>
+            <q-item-label class= "q-pt-sm text-capitalize" caption>{{orderInformation(order_id).courier.name | name_courier}}</q-item-label>
           </q-item-section>
         
         </q-card-section>       
@@ -81,7 +81,6 @@
         Cannot find your order. Check if the track id is correct.
       </q-banner>
     </div>    
-  <p v-if="updating"> Updating</p>
   </div>
                       
 </q-page>
@@ -107,12 +106,23 @@ export default {
       this.showEditOrder = false
     },
     copy_track_id(text){
-      copyToClipboard(text).then(() => {
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(text)
+        .then(() => {
+          Notify.create('Track id copied')
+        })
+        .catch(() => {
+          console.error('error');
+        })
+      }else{
+        copyToClipboard(text).then(() => {
         Notify.create('Track id copied')
-      })
-      .catch(() => {
-        console.log('error')
-      })
+        })
+        .catch(() => {
+          console.log('error')
+        })
+      }
+      
     }
   },
   components:{
@@ -122,6 +132,10 @@ export default {
         time: function(value){
             if (!value) return ''
             return value.slice(0,-3)
+        },
+        name_courier: function(value){
+            if (!value) return ''
+            return value.replace("-", " ")
         }
   },
   beforeMount(){
@@ -156,6 +170,10 @@ export default {
     width: 100%;
 
 }
-
+.ow{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
 
 </style>

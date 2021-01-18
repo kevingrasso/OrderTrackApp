@@ -27,15 +27,19 @@
   </q-card>
   <q-card
   v-if="tab == 'login'">
-     <div class="q-pa-md q-mt-md">
-         <q-banner class="bg-grey-3 row q-mb-md text-center" rounded>
+     <div class="q-pa-md q-mt-sm " >
+         <q-banner class="bg-grey-3 q-mb-sm text-center row" rounded>
             Do not have an account?
           </q-banner>
-             <q-btn 
-             class="full-width"  
-             color="accent" 
-             label= 'Create new account'
-             @click= "setTab('register')" />
+          <div class="row">
+              <q-btn 
+              class="q-mx-auto col-auto"
+              style="width:50%;"  
+              color="accent" 
+              label= 'Create new account'
+              @click= "setTab('register')" />
+          </div>
+             
         </div>
   </q-card>
 </q-page>

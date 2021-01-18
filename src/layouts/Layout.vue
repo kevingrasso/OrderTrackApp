@@ -82,7 +82,7 @@
         <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.pixabay.com/photo/2017/08/27/21/20/box-2687558_960_720.png">
+              <img src="~assets/icon.png">
             </q-avatar>
             <div class="text-weight-bold">Order Track App</div>
             <div>@order-track-app</div>

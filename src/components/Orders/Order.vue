@@ -11,40 +11,45 @@
             class="q-pb-md q-pt-md row"
             v-touch-hold:500.mouse="showEditOrderModal"
             clickable
-            :to="{ path: 'order-details', query: { id: id , order:order}}">
+            
+            :to="{ path: '/order-details', query: { id: id , order:order}}">
             <q-item-section avatar class="col-1">
                 <q-badge v-if= "order.order_data.updated" color="orange" class="absolute-top-left q-ml-sm q-mt-lg" style="border-radius: 10px; height:10px;"></q-badge>
                 <q-icon v-if="order.delivered" color="accent" name="home" />
                 <q-icon v-else color="accent" name="local_shipping" />
             </q-item-section>
-            <q-item-section class="col-5 q-pl-md">
-                {{order.name}}
-                <q-item-label class= "q-pt-sm" caption>{{order.track_id}}</q-item-label>
-                <q-item-label caption>{{order.courier.name}}</q-item-label>
+            <q-item-section class="col q-pl-md ow">
+                <q-item-label class= "ow"> {{order.name}}</q-item-label>
+               
+                <q-item-label class= "q-pt-sm text-uppercase ow" caption>{{order.track_id}}</q-item-label>
+                <q-item-label caption class="text-capitalize">{{order.courier.name | name_courier}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-4" side>
                 <q-item-label caption class="text-center">{{order.order_data.lastUpdateTime | time}}</q-item-label>
             </q-item-section>
             <q-item-section class="col-2" side>
-                <div class="row">
+               
                 <q-btn 
                     @click.prevent="showEditOrder = true" 
                     flat round dense 
+                    class="row"
                     color="secondary" 
                     icon="edit"/>
                 <q-btn 
                     v-if="order.archived"
                     @click.prevent="delete_order(id)"
                     flat round dense 
+                    class="row"
                     color="negative" 
                     icon="delete"/>
                 <q-btn 
                     v-else
                     @click.prevent="archiveOrder(id)" 
                     flat round dense 
+                    class="row"
                     color="secondary" 
                     icon="archive"/>
-                </div>
+                
             </q-item-section>
         
 
@@ -61,6 +66,7 @@
 </template>
 
 <script>
+import { route } from 'quasar/wrappers'
 import {mapActions} from 'vuex'
 
 export default {
@@ -85,6 +91,9 @@ export default {
                 persistent: true
             }).onOk(() => {
                 this.deleteOrder([id])
+                this.$q.notify({
+                message: 'Order Deleted'
+                })
             })
         },
         archiveOrder(id){
@@ -110,11 +119,19 @@ export default {
         time: function(value){
             if (!value) return ''
             return value.slice(0,-3)
+        },
+        name_courier: function(value){
+            if (!value) return ''
+            return value.replace("-", " ")
         }
     }
 }
 </script>
 
 <style>
-
+.ow{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
 </style>

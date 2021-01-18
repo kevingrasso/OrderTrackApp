@@ -5,7 +5,7 @@
          
         <div class="absolute q-pa-sm full-width">
                
-            <div class="row ">
+            <div class="row q-mb-md">
               <search />
               <sort />
             </div>

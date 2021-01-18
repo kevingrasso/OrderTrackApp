@@ -6,7 +6,7 @@
             </template>
             {{tab | titleCase}} to our Order Track App
         </q-banner>
-        <div  class="row q-mb-sm">
+        <div  class="row q-mb-xs">
             <q-input 
             class=" col"
             outlined 
@@ -16,7 +16,7 @@
             :rules="[ val => isEmailValid(val) || 'Please enter a valid email address']" 
             lazy-rules />
         </div>
-        <div  class="row q-mb-sm">
+        <div  class="row q-mb-xs">
         <q-input 
             class=" col "
             outlined 
@@ -29,7 +29,8 @@
         </div>
         <div  class="row q-mb-sm">
              <q-btn 
-             class="col"  
+             class="q-mx-auto"
+             style="width:50%;"
              color="secondary" 
              :label= 'tab'
              type="submit" />
