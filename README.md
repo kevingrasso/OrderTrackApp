@@ -35,7 +35,7 @@ In this project was developed an application that supports users to keep track o
 
 
 # Project Documents
-- Final report: https://github.com/kevingrasso/OrderTrackApp/tree/master/Progetto
+- Final report: https://github.com/kevingrasso/OrderTrackApp/tree/master/Progetto/Final%Report.pdf
 
 # Bibliography
 
