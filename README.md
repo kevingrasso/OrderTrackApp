@@ -4,45 +4,53 @@
 
 - **Academic Year**: 2020-2021
 - **Project Title**: Order track app
-- **Students**: Kevin Grasso
+- **Student**: Kevin Grasso
 - **CFUs**: 9
 
 In this project i will develop an application to track all shipment of an user. The idea is to develop a multi-platform application where an user can subscribe and keep track of all shipment of different couriers from different devices.
 
 # Tools and Techniques
-*In this section list the tools and any special techniques you will employ.*
 
-The main tools and techniques I will employ are:
 - **Quasar framework**: Framework based on vuejs for the interface \[2\].
-- **Nodejs**: for the server.\[3\]
-- **axios**: for calls to the API \[6\]
+- **Cordova**: For the android/ios app \[4\].
+- **Electron**: For the windows/mac os app  \[5\].
+- **Firebase**: For the database \[6\].
+- **ExpressJS**: For the server \[7\].
+- **Trackingmore**: Api for retrieving data of shippings  \[8\].
 
 
 # Expected Outcomes
 
 I expect the following outcomes from this project:
+- Needfinding to define the requirements of the app, define personas and scenarios
 - An application can be used from multiple platforms, like browser, android, ios, windows.
 - The interface intuitive and easy to use, where all information related to shipments will be displayed.
 - A database were i can save all data.
 - A server from which can retrieve all information regarding shipments.
+- Usability test
 
 # Summary
-*Finally, here give a summary of the project with some indication of impact.*
+
+In this project was developed an application that supports users to keep track of their shipments with multiple devices. In the future, the functionalities suggested by the candidates of the usability test will be implemented to make the application more user friendly.
 
 
 # Project Documents
-*Put links here to the **final report** and **presentation** for the project when finished.*
+- Final report: https://github.com/kevingrasso/OrderTrackApp/tree/master/Progetto
 
 # Bibliography
 
-\[1\] https://vuejs.org/
+\[1\] https://balsamiq.cloud/
 
-\[2\] https://quasar.dev/start/pick-quasar-flavour
+\[2\] https://quasar.dev/start/
 
-\[3\] https://nodejs.org/it/
+\[3\] https://vuejs.org/
 
-\[4\] https://firebase.google.com/
+\[4\] https://cordova.apache.org/
 
-\[5\] https://www.heroku.com/
+\[5\] https://www.electronjs.org/
 
-\[6\] https://github.com/axios/axios
+\[6\] https://firebase.google.com/
+
+\[7\] https://expressjs.com/it/
+
+\[8\] https://www.trackingmore.com/api-index.html
