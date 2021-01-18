@@ -34,5 +34,5 @@ yarn-error.log*
 *.sln
 
 dev.env
-.firebase
-.vscode
+**/.vscode/
+**/.firebase/
